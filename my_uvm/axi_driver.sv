@@ -10,7 +10,7 @@ class axi_driver extends uvm_driver #(axi_trans);
 
     virtual task run_phase(uvm_phase phase);
         forever begin
-            seq_item_port.get_next_item(req);
+            seq_item_port.get_next_item(req);  // 从 sequencer 获取一个包，存在 req 里
 
             `uvm_info("drv", $sformatf("got transaction: is_write=%0b, addr='h%0h", req.is_write, req.addr), UVM_LOW)
 
