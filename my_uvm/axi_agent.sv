@@ -1,5 +1,5 @@
-﻿import uvm_pkg::*;
-`include "macros.svh"
+import uvm_pkg::*;
+`include "uvm_macros.svh"
 
 class axi_agent extends uvm_agent;
     `uvm_component_utils(axi_agent)
@@ -17,7 +17,7 @@ class axi_agent extends uvm_agent;
 
         sqr = axi_sequencer::type_id::create("sqr", this);
         drv = axi_driver::type_id::create("drv", this);
-        mon = axo_moniter::type_id::create("mon", this);
+        mon = axi_monitor::type_id::create("mon", this);
     endfunction
 
     virtual function void connect_phase(uvm_phase phase);
