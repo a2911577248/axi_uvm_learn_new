@@ -1,0 +1,68 @@
+﻿太棒了！用搭建 AXI 验证环境来学习 UVM 是一个非常经典且实用的路径。
+
+结合你提供的 `axi.txt`（AXI 验证全景地图）和 `karpathy-guidelines`（Karpathy 的高效编程指导原则），我为你制定了一套**“目标驱动、由简入深”**的 UVM 学习与实战计划。
+
+我们将严格遵循**“简洁优先”**和**“目标驱动执行”**的原则：不一开始就写一个支持乱序、Outstanding 和全类型 Burst 的庞大环境，而是把大目标拆解为每一步都**可验证（Verifiable）**的小目标。
+
+以下是我们接下来要逐步攻克的学习计划：
+
+### 🎯 AXI-UVM 验证环境搭建实战计划
+
+#### **阶段 1：UVM 骨架与 Transaction 定义 (化繁为简)**
+*   **目标**：建立 UVM 树形结构，定义最基础的 AXI 事务。
+*   **行动**：
+    1. 编写最基础的 `axi_trans` 类（参考你的 `axi.txt`，但先只关注地址、数据、读写控制等核心字段）。
+    2. 搭建空的 UVM 环境骨架（`env`, `agent`, `driver`, `monitor`, `sequencer`）。
+    3. 编写一个最简单的 `test` 和 `sequence`，只做例化和打印。
+*   **验证标准 (Verify)**：代码编译通过，仿真能正常跑完 UVM phase 并打印出 `axi_trans` 的信息（Hello World 级别）。
+
+#### **阶段 2：Master 驱动与单步握手 (聚焦五通道)**
+*   **目标**：实现 Master Driver，完成最简单的写操作（单拍，无 Burst，无 Outstanding）。
+*   **行动**：
+    1. 定义 `axi_interface`。
+    2. 在 Master Driver 中实现 `AW`、`W` 和 `B` 通道的独立驱动逻辑（使用 `fork...join_none`，遵循 VALID/READY 握手铁律）。
+    3. 编写一个写操作的 Sequence。
+    4. 暂时用一个简单的 Dummy Slave（或者直接在 testbench 顶层写几行代码）来给 READY 响应。
+*   **验证标准 (Verify)**：拉出波形，看到 AW、W 通道成功拉高 VALID，并在 READY 拉高后正确握手，最后收到 B 通道响应。
+
+#### **阶段 3：Slave 响应与完整闭环 (验证闭环)**
+*   **目标**：完成 Slave Agent，并实现读写闭环。
+*   **行动**：
+    1. 编写 Slave Driver，实现接收请求并返回响应，内部维护一个简单的 Memory 数组（`bit [7:0] mem [longint unsigned]`）。
+    2. 在 Master Driver 中补充 `AR` 和 `R` 通道的驱动。
+    3. 编写 Sequence：先往地址 A 写数据，再从地址 A 读数据。
+*   **验证标准 (Verify)**：波形显示写操作和读操作均成功握手，且读出的数据与写入的数据在波形上一致。
+
+#### **阶段 4：Monitor 与 Scoreboard (解耦与自动化检查)**
+*   **目标**：实现自动化比对，取代人工看波形。
+*   **行动**：
+    1. 完善 Monitor，将被动采集的总线信号组装成完整的 `axi_trans`。
+    2. 通过 Analysis Port 将 trans 发送给 Scoreboard。
+    3. 编写 Scoreboard，维护一个 Reference Model，比对 Master 读回的数据与预期是否一致。
+*   **验证标准 (Verify)**：
+    *   正常读写时，Scoreboard 打印 "MATCH"。
+    *   故意在 Slave 中注入错误数据，Scoreboard 能准确报错 "MISMATCH"。
+
+#### **阶段 5：协议检查器 Checker 分离 (精准隔离)**
+*   **目标**：落实 `axi.txt` 中“Checker 不一定要塞进 Monitor 里”的工程化设计。
+*   **行动**：
+    1. 新建 `axi_protocol_checker.sv`，用 SVA（SystemVerilog Assertions）编写最基础的断言，如 `AWVALID && !AWREADY |=> $stable(AWADDR)`。
+    2. 用 `bind` 语法将 Checker 绑定到 `axi_interface`。
+*   **验证标准 (Verify)**：故意在 Sequence 中写一段违规的时序（比如没握手就变地址），验证断言能否立刻触发 Error。
+
+#### **阶段 6：进阶功能打怪升级 (复杂场景演练)**
+*   **目标**：逐步支持 AXI 的高级特性。
+*   **行动**：
+    1. **Burst 支持**：修改 Driver 和 Monitor，支持 INCR/WRAP 并处理 WLAST/RLAST。
+    2. **反压 (Backpressure)**：在 Slave 中随机拉低 READY，验证系统不挂死。
+    3. **Outstanding & 乱序**：加入多 ID 支持和 Outstanding 发包（这部分最难，留到最后）。
+    4. **Coverage**：添加 Covergroup 收集功能覆盖率。
+*   **验证标准 (Verify)**：针对每个特性编写专属 Test，跑通波形且 Scoreboard 和 Checker 无报错。
+
+---
+
+### 我们现在从哪里开始？
+
+为了避免“过度复杂”（Simplicity First），我建议我们今天只做**阶段 1**。
+
+**你需要我先为你提供 阶段1 的骨架代码（包括最精简的 `axi_trans` 和 UVM `env` 结构），还是你想自己先试着写一下，然后发给我 review？**
