@@ -25,27 +25,28 @@ module tb_top;
 
   initial begin
     uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.drv", "vif", vif);
+    uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.slave_drv", "vif", vif);
     run_test("base_test"); 
   end
 
 
-  assign vif.awready = 1'b1; 
-  assign vif.wready  = 1'b1;
+  // assign vif.awready = 1'b1; 
+  // assign vif.wready  = 1'b1;
 
-  initial begin
-    vif.bvalid = 0;
-    vif.bresp  = 0; 
-    forever begin
-      @(posedge aclk);
-      if (vif.wvalid && vif.wready) begin
-        vif.bvalid <= 1'b1; 
-        vif.bresp <= 1'b1;
+  // initial begin
+  //   vif.bvalid = 0;
+  //   vif.bresp  = 0; 
+  //   forever begin
+  //     @(posedge aclk);
+  //     if (vif.wvalid && vif.wready) begin
+  //       vif.bvalid <= 1'b1; 
+  //       vif.bresp <= 1'b1;
 
-      @(posedge aclk iff vif.bready == 1'b1);
-        vif.bvalid <= 1'b0; 
-      end
-    end
-  end
+  //     @(posedge aclk iff vif.bready == 1'b1);
+  //       vif.bvalid <= 1'b0; 
+  //     end
+  //    end
+  // end
 
 
 endmodule

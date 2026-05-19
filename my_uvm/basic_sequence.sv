@@ -12,14 +12,16 @@ class basic_seq extends uvm_sequence #(axi_trans);
         axi_trans trans;
 
         trans = axi_trans::type_id::create("trans");
-
         start_item(trans);
-
-        assert(trans.randomize());
-        
-        `uvm_info("seq", "sent one transaction", UVM_LOW)
+        assert(trans.randomize() with {is_write == 1; addr == 'h100; data == 'h8899AABB;});
+        `uvm_info("SEQ", "sent one write transaction", UVM_LOW)
         finish_item(trans);
 
+        trans = axi_trans::type_id::create("trans");
+        start_item(trans);
+        assert(trans.randomize() with {is_write == 0; addr == 'h100; data == '0;});
+        `uvm_info("SEQ", "sent one read transaction", UVM_LOW)
+        finish_item(trans);
 
 
     endtask

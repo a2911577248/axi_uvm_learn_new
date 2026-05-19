@@ -4,9 +4,9 @@ import uvm_pkg::*;
 class axi_agent extends uvm_agent;
     `uvm_component_utils(axi_agent)
 
-    axi_sequencer sqr;
+    axi_sequencer        sqr;
     axi_driver    drv;
-    axi_monitor   mon;
+    axi_monitor          mon;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);

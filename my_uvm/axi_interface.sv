@@ -15,4 +15,15 @@ interface axi_interface(input aclk, input aresetn);
     logic       bvalid;
     logic       bready;
 
+
+    logic        arvalid;
+    logic        arready;
+    logic [31:0] araddr;
+
+
+    logic        rvalid;
+    logic        rready;
+    logic [31:0] rdata;
+    logic [1:0]  rresp;
+
 endinterface
