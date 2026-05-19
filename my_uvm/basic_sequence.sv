@@ -16,10 +16,11 @@ class basic_seq extends uvm_sequence #(axi_trans);
         start_item(trans);
 
         assert(trans.randomize());
-
+        
+        `uvm_info("seq", "sent one transaction", UVM_LOW)
         finish_item(trans);
 
-        `uvm_info("seq", "sent one transaction", UVM_LOW)
+
 
     endtask
 
