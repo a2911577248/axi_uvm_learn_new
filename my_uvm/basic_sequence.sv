@@ -24,6 +24,12 @@ class basic_seq extends uvm_sequence #(axi_trans);
         finish_item(trans);
 
 
+        trans = axi_trans::type_id::create("trans");
+        start_item(trans);
+        assert(trans.randomize() with {is_write == 1; addr == 'h101; data == 'h2222_2222;});
+        `uvm_info("SEQ", "sencond sent one write transaction", UVM_LOW)
+        finish_item(trans);
+
     endtask
 
 endclass

@@ -239,3 +239,126 @@
 15:25:09 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779261909_hmain_p213885] 
 15:25:10 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779261910_hmain_p214066] 
 15:25:10 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779261910_hmain_p214066] 
+16:28:08 (snpslmd) TIMESTAMP 5/20/2026
+18:23:14 (snpslmd) (@snpslmd-SLOG@) ===============================================
+18:23:14 (snpslmd) (@snpslmd-SLOG@) === Last 10 Client Requests Processing Time (in ms) ===
+18:23:14 (snpslmd) (@snpslmd-SLOG@) Time: Wed May 20 2026 18:23:14 CST
+18:23:14 (snpslmd) (@snpslmd-SLOG@) Request processing time, when, #concurrent clients, client info (user, node, FD)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:25:10 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000000 ms at Wed May 20 2026 15:25:10 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 
+18:23:14 (snpslmd) (@snpslmd-SLOG@) === Top 10 Peak Client Requests Processing Time (in ms) ===
+18:23:14 (snpslmd) (@snpslmd-SLOG@) Time: Wed May 20 2026 18:23:14 CST
+18:23:14 (snpslmd) (@snpslmd-SLOG@) Request processing time, when, #concurrent clients, client info (user, node, FD)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 10:24:56 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 10:25:00 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 10:25:00 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:11:15 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:14:14 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:21:00 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:21:06 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:21:06 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:21:06 CST,#4,(yian,localhost.localdomain,84)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 00000001 ms at Wed May 20 2026 15:25:10 CST,#3,(yian,localhost.localdomain,83)
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 
+18:23:14 (snpslmd) (@snpslmd-SLOG@) === Top 10 Peak In-house Operations time (in ms) ===
+18:23:14 (snpslmd) (@snpslmd-SLOG@) NOTE: Peak times greater than 4 seconds get recorded.
+18:23:14 (snpslmd) (@snpslmd-SLOG@) Time: Wed May 20 2026 18:23:14 CST
+18:23:14 (snpslmd) (@snpslmd-SLOG@) In-house operation time, when, #concurrent clients
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 
+18:23:14 (snpslmd) (@snpslmd-SLOG@) === Active Connections Info ===
+18:23:14 (snpslmd) (@snpslmd-SLOG@) Peak active connections #4 attempted at Wed May 20 2026 10:24:56 CST
+18:23:14 (snpslmd) (@snpslmd-SLOG@) 
+18:23:14 (snpslmd) (@snpslmd-SLOG@) ===============================================
+18:58:24 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274704_hmain_p237796] 
+18:58:25 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274704_hmain_p237796] 
+18:58:35 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274715_hmain_p238138] 
+18:58:35 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274715_hmain_p238138] 
+18:59:30 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274770_hmain_p238571] 
+18:59:30 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274770_hmain_p238571] 
+19:00:56 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274856_hmain_p239009] 
+19:00:57 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274856_hmain_p239009] 
+19:01:14 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274874_hmain_p239425] 
+19:01:14 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274874_hmain_p239425] 
+19:02:44 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274964_hmain_p239949] 
+19:02:45 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274964_hmain_p239949] 
+19:02:54 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274974_hmain_p240287] 
+19:02:55 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779274974_hmain_p240287] 
+19:03:45 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275025_hmain_p240696] 
+19:03:45 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275025_hmain_p240696] 
+19:04:43 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275083_hmain_p241071] 
+19:04:44 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275083_hmain_p241071] 
+19:05:36 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275136_hmain_p241509] 
+19:05:37 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275136_hmain_p241509] 
+19:08:38 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275318_hmain_p242182] 
+19:08:38 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275318_hmain_p242182] 
+19:08:50 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275330_hmain_p242522] 
+19:08:50 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275330_hmain_p242522] 
+19:09:30 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275370_hmain_p242953] 
+19:09:31 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275370_hmain_p242953] 
+19:10:46 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275446_hmain_p243391] 
+19:10:46 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275446_hmain_p243391] 
+19:11:03 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275463_hmain_p243729] 
+19:11:03 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275463_hmain_p243729] 
+19:11:27 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275487_hmain_p244150] 
+19:11:27 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275487_hmain_p244150] 
+19:11:53 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275513_hmain_p244497] 
+19:11:53 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275513_hmain_p244497] 
+19:12:12 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275532_hmain_p244837] 
+19:12:12 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275532_hmain_p244837] 
+19:14:14 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275654_hmain_p245419] 
+19:14:14 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275654_hmain_p245419] 
+19:15:29 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275729_hmain_p245940] 
+19:15:30 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275729_hmain_p245940] 
+19:17:24 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275844_hmain_p246534] 
+19:17:24 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779275844_hmain_p246534] 
+19:20:08 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276008_hmain_p247066] 
+19:20:09 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276008_hmain_p247066] 
+19:24:12 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276252_hmain_p247778] 
+19:24:13 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276252_hmain_p247778] 
+19:25:05 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276305_hmain_p248179] 
+19:25:05 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276305_hmain_p248179] 
+19:27:06 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276426_hmain_p248702] 
+19:27:07 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276426_hmain_p248702] 
+19:34:51 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276891_hmain_p249733] 
+19:34:51 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779276891_hmain_p249733] 
+19:36:43 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277003_hmain_p250252] 
+19:36:43 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277003_hmain_p250252] 
+19:36:55 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277015_hmain_p250597] 
+19:37:01 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277015_hmain_p250597] 
+19:37:01 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277021_hmain_p250670] 
+19:37:01 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277021_hmain_p250670] 
+19:37:01 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277021_hmain_p250866] 
+19:37:01 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277021_hmain_p250866] 
+19:43:40 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277420_hmain_p251777] 
+19:43:44 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277420_hmain_p251777] 
+19:43:44 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277424_hmain_p251850] 
+19:43:44 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277424_hmain_p251850] 
+19:43:44 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277424_hmain_p252032] 
+19:43:44 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277424_hmain_p252032] 
+19:45:27 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277527_hmain_p252489] 
+19:45:27 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277527_hmain_p252489] 
+19:45:28 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277528_hmain_p252505] 
+19:45:28 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277528_hmain_p252505] 
+19:45:34 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277534_hmain_p252810] 
+19:45:34 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277534_hmain_p252810] 
+19:45:35 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277535_hmain_p252826] 
+19:45:35 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277535_hmain_p252826] 
+19:46:24 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277584_hmain_p253223] 
+19:46:24 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277584_hmain_p253223] 
+19:46:24 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277584_hmain_p253239] 
+19:46:24 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277584_hmain_p253239] 
+19:47:39 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277659_hmain_p253645] 
+19:47:42 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277659_hmain_p253645] 
+19:47:42 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277662_hmain_p253718] 
+19:47:42 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779277662_hmain_p253718] 
+19:47:43 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277663_hmain_p253899] 
+19:47:43 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779277663_hmain_p253899] 

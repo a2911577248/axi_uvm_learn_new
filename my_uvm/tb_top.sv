@@ -27,6 +27,7 @@ module tb_top;
     uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.drv", "vif", vif);
     uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.slave_drv", "vif", vif);
     uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.mon", "vif", vif);
+    uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top", "vif", vif);
     run_test("base_test"); 
   end
 
@@ -49,5 +50,6 @@ module tb_top;
   //    end
   // end
 
+  bind axi_interface axi_protocol_checker chk_inst (.*);
 
 endmodule
