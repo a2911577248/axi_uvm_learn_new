@@ -14,6 +14,7 @@ interface axi_interface(input aclk, input aresetn);
     logic [1:0] bresp;
     logic       bvalid;
     logic       bready;
+    
 
 
     logic        arvalid;
