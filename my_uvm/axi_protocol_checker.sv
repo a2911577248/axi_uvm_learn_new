@@ -24,6 +24,9 @@ interface axi_protocol_checker (
         awvalid |=> ##[0:20] awready;
     endproperty
     assert_axi_aw_handshake_timeout:assert property (p_axi_aw_handshake_timeout)
-        else $error("[PROTOCOL ERROR]  awready trapped for more than 20 cycles");
+        else begin
+            $error("[PROTOCOL ERROR]  awready trapped for more than 20 cycles");
+            $finish;
+        end
 
 endinterface

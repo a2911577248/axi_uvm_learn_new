@@ -1,10 +1,10 @@
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
-class basic_seq extends uvm_sequence #(axi_trans);
-    `uvm_object_utils(basic_seq)
+class basic_sequence extends uvm_sequence #(axi_trans);
+    `uvm_object_utils(basic_sequence)
 
-    function new(string name = "basic_seq");
+    function new(string name = "basic_sequence");
         super.new(name);
     endfunction
 

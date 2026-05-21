@@ -5,6 +5,7 @@ class base_test extends uvm_test;
     `uvm_component_utils(base_test)
 
     axi_env env;
+    virtual axi_interface vif;
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -13,12 +14,14 @@ class base_test extends uvm_test;
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
         env = axi_env::type_id::create("env", this);
-
+        if (!uvm_config_db#(virtual axi_interface)::get(this, "", "vif", vif)) begin
+            `uvm_fatal("BASE_TEST", "can not get axi_interface")
+        end
     endfunction
     
     virtual task run_phase(uvm_phase phase);
-        basic_seq seq;
-        seq = basic_seq::type_id::create("seq", this);
+        basic_sequence seq;
+        seq = basic_sequence::type_id::create("seq", this);
 
         phase.raise_objection(this);
         seq.start(env.master_agent.sqr);
