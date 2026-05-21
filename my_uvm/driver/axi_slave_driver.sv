@@ -28,15 +28,21 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
         fork
             forever begin
                 logic [31:0]temp_addr;
+                logic [7:0] temp_len;
+                //logic [2:0] temp_size;
                 //AW
                 vif.awready <= 1;
                 @(posedge vif.aclk iff vif.awvalid == 1'b1);
                 temp_addr = vif.awaddr;
+                temp_len = vif.awlen;
                 vif.awready <= 0;
                 //W
                 vif.wready <=1;
-                @(posedge vif.aclk iff vif.wvalid == 1'b1);
-                mem[temp_addr] <= vif.wdata;
+                for(int i=0; i <= temp_len; i = i+1)begin
+                    @(posedge vif.aclk iff vif.wvalid == 1'b1);
+                    mem[temp_addr] = vif.wdata;
+                    temp_addr = temp_addr + 4;
+                end
                 vif.wready <= 0;
                 //B
                 vif.bvalid <= 1'b1;
@@ -47,20 +53,28 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
 
             forever begin
                 logic [31:0]temp_addr;
+                logic [7:0] temp_len;
                 //AR
                 vif.arready <= 1;
                 @(posedge vif.aclk iff vif.arvalid == 1'b1);
                 vif.arready <= 0;
                 temp_addr = vif.araddr;
+                temp_len = vif.arlen;
                 //R
-                if(mem.exists(temp_addr))begin
-                    vif.rdata <= mem[temp_addr];
-                end else vif.rdata <= 'hAAAA0000;
                 vif.rvalid <= 1;
                 vif.rresp <= 2'b00;
-                @(posedge vif.aclk iff vif.rready == 1'b1);
+
+                for(int i=0; i <= temp_len; i = i+1)begin
+                    if(mem.exists(temp_addr))begin
+                        vif.rdata <= mem[temp_addr];
+                    end else vif.rdata <= 'hAAAA0000;
+                    temp_addr = temp_addr + 4;
+
+                    vif.rlast <= (i == temp_len);
+                    @(posedge vif.aclk iff vif.rready == 1'b1);
+                end
                 vif.rvalid <= 0;
-                @(posedge vif.aclk);
+                vif.rlast <= 1'b0;
             end
 
         join

@@ -37,13 +37,16 @@ class axi_driver extends uvm_driver #(axi_trans);
         forever begin
             seq_item_port.get_next_item(req);
             if(req.is_write)begin
-                `uvm_info("DRV", $sformatf("got transaction: is_write=%0b, addr='h%0h, data=%0h", req.is_write, req.addr, req.data), UVM_LOW)
                 fork
                     //AW
                     begin
                         @(posedge vif.aclk);
                         vif.awvalid <= 1;
                         vif.awaddr <= req.addr;
+
+                        vif.awlen <= req.len;
+                        vif.awsize <= req.size;
+                        vif.awburst <= req.burst;
 
                         @(posedge vif.aclk iff vif.awready == 1'b1);
                         vif.awvalid <= 0;
@@ -52,11 +55,15 @@ class axi_driver extends uvm_driver #(axi_trans);
                     begin
                         @(posedge vif.aclk);
                         vif.wvalid <= 1;
-                        vif.wdata <= req.data;
-
-                        @(posedge vif.aclk iff vif.wready == 1'b1);
-                        vif.wvalid <= 0;
+                        for(int i=0; i<= req.len; i=i+1)begin
+                            vif.wdata <= req.data[i];
+                            vif.wlast <= (i == req.len);
+                            @(posedge vif.aclk iff vif.wready == 1'b1);
+                        end
+                        vif.wvalid <= 1'b0;
+                        vif.wlast  <= 1'b0;                        
                     end
+
 
                     //B
                     begin
@@ -65,8 +72,7 @@ class axi_driver extends uvm_driver #(axi_trans);
 
                         @(posedge vif.aclk iff vif.bvalid == 1'b1);
                         vif.bready <= 0;
-                        `uvm_info("DRV", $sformatf("driver get write resp='%0b'", vif.bresp), UVM_LOW)
-                    end                    
+                    end
                 join
                 `uvm_info("DRV", "Write Transaction Finished!", UVM_LOW)
             end
@@ -80,6 +86,10 @@ class axi_driver extends uvm_driver #(axi_trans);
                         vif.arvalid <= 1;
                         vif.araddr <= req.addr;
 
+                        vif.arsize <= req.size;
+                        vif.arlen <= req.len;
+                        vif.arburst <= req.burst;
+
                         @(posedge vif.aclk iff vif.arready == 1'b1);
                         vif.arvalid <= 0;
                     end
@@ -87,10 +97,13 @@ class axi_driver extends uvm_driver #(axi_trans);
                     begin
                         @(posedge vif.aclk);
                         vif.rready <= 1;
-                        @(posedge vif.aclk iff vif.rvalid)
-                        `uvm_info("DRV", $sformatf("transaction read: data=%0h",vif.rdata), UVM_LOW)
-                        req.data <= vif.rdata;
+
+                        for(int i=0; i <= req.len; i = i + 1)begin
+                            @(posedge vif.aclk iff vif.rvalid);
+                            req.data[i] = vif.rdata[i];  //注意这里是=不是<=
+                        end
                         vif.rready <= 0;
+                        //`uvm_info("DRV", $sformatf("transaction read: data=%0h",vif.rdata), UVM_LOW)
                     end
                     
                 join

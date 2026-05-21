@@ -23,47 +23,67 @@ class axi_monitor extends uvm_monitor;
         super.run_phase(phase);
         wait(vif.aresetn == 1'b1);
 
+
+
         fork
             //R
             forever begin
                 axi_trans trans;
                 logic [31:0]temp_addr;
-                logic [31:0]temp_data;
+                logic [7:0] temp_len;
+                logic [1:0] temp_resp;
 
                 @(posedge vif.aclk iff (vif.arready && vif.arvalid));
                 temp_addr = vif.araddr;
-                @(posedge vif.aclk iff (vif.rready && vif.rvalid));
-                temp_data = vif.rdata;
+                temp_len  = vif.arlen;
 
                 trans = axi_trans::type_id::create("trans"); 
-                trans.data = temp_data;
+                trans.data = new[temp_len + 1];
+                
+                for(int i = 0; i <= temp_len; i++) begin
+                    @(posedge vif.aclk iff (vif.rready && vif.rvalid));
+                    trans.data[i] = vif.rdata;
+                    if (i == temp_len) temp_resp = vif.rresp;
+                end
+
                 trans.addr = temp_addr;
+                trans.len  = temp_len;
                 trans.is_write = 0;
+                trans.resp = temp_resp;
                 ap.write(trans);
-                `uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data='h%0h", trans.addr, trans.data), UVM_LOW)
+                `uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data size=%0d, Data[0]='h%0h", trans.addr, trans.data.size(), trans.data[0]), UVM_LOW)
             end
 
             //W
             forever begin
                 axi_trans trans;
                 logic [31:0]temp_addr;
-                logic [31:0]temp_data;
-                logic [1:0] temp_resp;
+                logic [7:0] temp_len;
+                logic [1:0] temp_resp; 
 
+                //AW
                 @(posedge vif.aclk iff (vif.awready && vif.awvalid));
                 temp_addr = vif.awaddr;
-                @(posedge vif.aclk iff (vif.wready && vif.wvalid));
-                temp_data = vif.wdata;
+                temp_len = vif.awlen;
+
+                trans = axi_trans::type_id::create("trans");
+                trans.data = new[temp_len + 1];
+
+                for(int i=0; i <= temp_len; i = i+1)begin
+                    @(posedge vif.aclk iff (vif.wready && vif.wvalid));
+                    trans.data[i] = vif.wdata;                    
+                end
+
+                //B
                 @(posedge vif.aclk iff (vif.bready && vif.bvalid));
                 temp_resp = vif.bresp;
 
-                trans = axi_trans::type_id::create("trans"); 
-                trans.data = temp_data;
                 trans.addr = temp_addr;
+                trans.len = temp_len;
                 trans.is_write = 1;
                 trans.resp = temp_resp;
                 ap.write(trans);
-                `uvm_info("MON", $sformatf("Captured WRITE: Addr='h%0h, Data='h%0h", trans.addr, trans.data), UVM_LOW)
+               // `uvm_info("MON", $sformatf("Captured WRITE: Addr='h%0h, Data='h%0h", trans.addr, trans.data), UVM_LOW)
             end           
 
         join
