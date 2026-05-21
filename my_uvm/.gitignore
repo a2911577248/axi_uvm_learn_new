@@ -1,3 +1,3 @@
-﻿/run/
+﻿/run/*
 !/run/file.list
 !/run/Makefile
