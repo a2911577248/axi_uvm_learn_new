@@ -5,9 +5,10 @@ module tb_top;
 
   logic aclk,aresetn;
 
+
   initial begin
     $fsdbDumpfile("tb.fsdb");
-    $fsdbDumpvars(0, tb_top);
+    $fsdbDumpvars(0, tb_top, "+all");
   end
 
   initial begin
@@ -51,5 +52,6 @@ module tb_top;
   // end
 
   bind axi_interface axi_protocol_checker chk_inst (.*);
+  bind axi_interface axi_burst_checker axi_burst_checker (.*);
 
 endmodule

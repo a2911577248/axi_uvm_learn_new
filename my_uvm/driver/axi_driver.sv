@@ -31,6 +31,8 @@ class axi_driver extends uvm_driver #(axi_trans);
         vif.awvalid <= 0;
         vif.wvalid <= 0;
         vif.bready <= 0;
+        vif.arvalid <= 0;
+        vif.rready  <= 0;
 
         wait(vif.aresetn == 1'b1);
 
@@ -57,11 +59,13 @@ class axi_driver extends uvm_driver #(axi_trans);
                         vif.wvalid <= 1;
                         for(int i=0; i<= req.len; i=i+1)begin
                             vif.wdata <= req.data[i];
+                            vif.wstrb <= req.wstrb;
                             vif.wlast <= (i == req.len);
                             @(posedge vif.aclk iff vif.wready == 1'b1);
                         end
                         vif.wvalid <= 1'b0;
                         vif.wlast  <= 1'b0;                        
+                        vif.wstrb  <= '0;
                     end
 
 
@@ -100,7 +104,7 @@ class axi_driver extends uvm_driver #(axi_trans);
 
                         for(int i=0; i <= req.len; i = i + 1)begin
                             @(posedge vif.aclk iff vif.rvalid);
-                            req.data[i] = vif.rdata[i];  //注意这里是=不是<=
+                            req.data[i] = vif.rdata;  //注意这里是=不是<=
                         end
                         vif.rready <= 0;
                         //`uvm_info("DRV", $sformatf("transaction read: data=%0h",vif.rdata), UVM_LOW)

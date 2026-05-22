@@ -31,11 +31,13 @@ class axi_monitor extends uvm_monitor;
                 axi_trans trans;
                 logic [31:0]temp_addr;
                 logic [7:0] temp_len;
+                logic [2:0] temp_size;
                 logic [1:0] temp_resp;
 
                 @(posedge vif.aclk iff (vif.arready && vif.arvalid));
                 temp_addr = vif.araddr;
                 temp_len  = vif.arlen;
+                temp_size = vif.arsize;
 
                 trans = axi_trans::type_id::create("trans"); 
                 trans.data = new[temp_len + 1];
@@ -48,10 +50,13 @@ class axi_monitor extends uvm_monitor;
 
                 trans.addr = temp_addr;
                 trans.len  = temp_len;
+                trans.size = temp_size;
                 trans.is_write = 0;
                 trans.resp = temp_resp;
                 ap.write(trans);
-                `uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data size=%0d, Data[0]='h%0h", trans.addr, trans.data.size(), trans.data[0]), UVM_LOW)
+                foreach(trans.data[i])begin
+                    `uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data size=%0d, Data[%0d]='h%0h", trans.addr, trans.data.size(),i ,trans.data[i]), UVM_LOW)
+                end
             end
 
             //W
@@ -59,18 +64,22 @@ class axi_monitor extends uvm_monitor;
                 axi_trans trans;
                 logic [31:0]temp_addr;
                 logic [7:0] temp_len;
+                logic [2:0] temp_size;
+                logic [3:0] temp_wstrb;
                 logic [1:0] temp_resp; 
 
                 //AW
                 @(posedge vif.aclk iff (vif.awready && vif.awvalid));
                 temp_addr = vif.awaddr;
                 temp_len = vif.awlen;
+                temp_size = vif.awsize;
 
                 trans = axi_trans::type_id::create("trans");
                 trans.data = new[temp_len + 1];
 
                 for(int i=0; i <= temp_len; i = i+1)begin
                     @(posedge vif.aclk iff (vif.wready && vif.wvalid));
+                    temp_wstrb = vif.wstrb;
                     trans.data[i] = vif.wdata;                    
                 end
 
@@ -80,6 +89,8 @@ class axi_monitor extends uvm_monitor;
 
                 trans.addr = temp_addr;
                 trans.len = temp_len;
+                trans.size = temp_size;
+                trans.wstrb = temp_wstrb;
                 trans.is_write = 1;
                 trans.resp = temp_resp;
                 ap.write(trans);

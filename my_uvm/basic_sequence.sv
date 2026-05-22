@@ -42,7 +42,15 @@ class basic_sequence extends uvm_sequence #(axi_trans);
         `uvm_info("SEQ", "Sent one WRITE BURST transaction", UVM_LOW)
         finish_item(trans);
 
-
+        start_item(trans);
+        assert(trans.randomize() with {
+            is_write == 0; 
+            addr == 'h100; 
+            len == 3;
+            foreach(data[i]) data[i] == 'hA0A0_0000 + i;
+        });
+        `uvm_info("SEQ", "Sent one READ BURST transaction", UVM_LOW)
+        finish_item(trans);
     endtask
 
 endclass

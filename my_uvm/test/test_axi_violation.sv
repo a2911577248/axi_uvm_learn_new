@@ -15,8 +15,6 @@ class test_axi_violation extends base_test;
     endfunction
 
     virtual task run_phase(uvm_phase phase);
-        
-
         phase.raise_objection(this);
 
         fork

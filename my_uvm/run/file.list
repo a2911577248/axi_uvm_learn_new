@@ -6,8 +6,8 @@
 ../axi_scoreboard.sv
 ../axi_agent.sv
 ../axi_env.sv
-../axi_protocol_checker.sv
-
+../checker/axi_protocol_checker.sv
+../checker/axi_burst_checker.sv
 
 ../basic_sequence.sv
 ../test/base_test.sv
