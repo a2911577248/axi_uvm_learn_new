@@ -8,10 +8,12 @@
 ../axi_env.sv
 ../checker/axi_protocol_checker.sv
 ../checker/axi_burst_checker.sv
+../checker/axi_4k_boundary_checker.sv
 
-../basic_sequence.sv
+../sequence/basic_sequence.sv
+../sequence/axi_violation_seq.sv
 ../test/base_test.sv
-../test/test_axi_violation.sv
+
 
 ../axi_interface.sv
 

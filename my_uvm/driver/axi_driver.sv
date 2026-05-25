@@ -57,7 +57,7 @@ class axi_driver extends uvm_driver #(axi_trans);
                     begin
                         @(posedge vif.aclk);
                         vif.wvalid <= 1;
-                        for(int i=0; i<= req.len; i=i+1)begin
+                        for(int i=0; i <= req.len; i=i+1)begin
                             vif.wdata <= req.data[i];
                             vif.wstrb <= req.wstrb;
                             vif.wlast <= (i == req.len);

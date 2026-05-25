@@ -25,10 +25,11 @@ module tb_top;
 
 
   initial begin
-    uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.drv", "vif", vif);
-    uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.slave_drv", "vif", vif);
-    uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.mon", "vif", vif);
-    uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top", "vif", vif);
+    // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.drv", "vif", vif);
+    // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.slave_drv", "vif", vif);
+    // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.mon", "vif", vif);
+    // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top", "vif", vif);
+    uvm_config_db#(virtual axi_interface)::set(null, "*", "vif", vif);
     run_test("base_test"); 
   end
 
@@ -53,5 +54,6 @@ module tb_top;
 
   bind axi_interface axi_protocol_checker chk_inst (.*);
   bind axi_interface axi_burst_checker axi_burst_checker (.*);
+  bind axi_interface axi_4k_boundary_checker  axi_4k_boundary (.*);
 
 endmodule

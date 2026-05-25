@@ -24,6 +24,7 @@ class base_test extends uvm_test;
         seq = basic_sequence::type_id::create("seq", this);
 
         phase.raise_objection(this);
+        `uvm_info("TEST", $sformatf("Running sequence: %s", seq.get_type_name()), UVM_LOW)
         seq.start(env.master_agent.sqr);
         phase.drop_objection(this);
 

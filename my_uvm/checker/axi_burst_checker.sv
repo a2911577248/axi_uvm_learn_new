@@ -14,6 +14,7 @@ interface axi_burst_checker(
     input wvalid,
     input wlast,
 
+    //todo ar burst checker
     input arvalid,
     input arready,
     input [7:0] arlen,
