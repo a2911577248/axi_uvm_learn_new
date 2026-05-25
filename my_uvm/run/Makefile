@@ -11,7 +11,7 @@ SIM_ARGS = $(shell if [ -f $(CFG_FILE) ]; then grep -v '^[[:space:]]*//' $(CFG_F
 .PHONY: com sim verdi all
 
 com:
-	vcs -sverilog -ntb_opts uvm -full64 -f file.list -debug_access+all
+	vcs -sverilog -ntb_opts uvm -full64 -f file.list -debug_access+all 2>&1 | tee compile.log
 
 # 统一的仿真命令入口
 sim:

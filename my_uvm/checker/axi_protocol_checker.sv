@@ -21,7 +21,7 @@ interface axi_protocol_checker (
 
     property p_axi_aw_handshake_timeout;
         @(posedge aclk) disable iff (!aresetn)
-        awvalid |=> ##[0:20] awready;
+        (awvalid && !awready) |-> ##[1:20] awready;
     endproperty
     assert_axi_aw_handshake_timeout:assert property (p_axi_aw_handshake_timeout)
         else begin

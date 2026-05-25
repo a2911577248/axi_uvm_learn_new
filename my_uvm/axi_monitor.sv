@@ -55,7 +55,7 @@ class axi_monitor extends uvm_monitor;
                 trans.resp = temp_resp;
                 ap.write(trans);
                 foreach(trans.data[i])begin
-                    `uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data size=%0d, Data[%0d]='h%0h", trans.addr, trans.data.size(),i ,trans.data[i]), UVM_LOW)
+                    //`uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data size=%0d, Data[%0d]='h%0h", trans.addr, trans.data.size(),i ,trans.data[i]), UVM_LOW)
                 end
             end
 

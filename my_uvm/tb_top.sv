@@ -23,14 +23,24 @@ module tb_top;
 
   axi_interface vif(aclk, aresetn);
 
+  logic [31:0] max_illegal_addr;
+
+
 
   initial begin
     // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.drv", "vif", vif);
     // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.slave_drv", "vif", vif);
     // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top.env.master_agent.mon", "vif", vif);
     // uvm_config_db#(virtual axi_interface)::set(null, "uvm_test_top", "vif", vif);
+
+    if (!$value$plusargs("MAX_ILLEGAL_ADDR=%h", max_illegal_addr))
+      max_illegal_addr = 'hFFFF_FFFF; // default
+
+    uvm_config_db#(logic [31:0])::set(null, "*", "max_illegal_addr", max_illegal_addr);
+      `uvm_info("CFG", $sformatf("max_illegal_addr=0x%0h", max_illegal_addr), UVM_LOW)
+
     uvm_config_db#(virtual axi_interface)::set(null, "*", "vif", vif);
-    run_test("base_test"); 
+    run_test("base_test");
   end
 
 
