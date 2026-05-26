@@ -41,7 +41,7 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 //AW
                 is_illegal = 1'b0;
                 vif.awready <= 1;
-                @(posedge vif.aclk iff vif.awvalid == 1'b1);
+                @(posedge vif.aclk iff (vif.awvalid == 1'b1 && vif.awready == 1'b1));
                 temp_addr = vif.awaddr;
                 temp_len = vif.awlen;
                 vif.awready <= 0;
@@ -84,7 +84,7 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 //AR
                 is_illegal = 1'b0;
                 vif.arready <= 1;
-                @(posedge vif.aclk iff vif.arvalid == 1'b1);
+                @(posedge vif.aclk iff (vif.arvalid == 1'b1 && vif.arready == 1'b1));
                 vif.arready <= 0;
                 temp_addr = vif.araddr;
                 temp_len = vif.arlen;

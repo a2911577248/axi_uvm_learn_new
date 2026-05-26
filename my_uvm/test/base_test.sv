@@ -30,4 +30,20 @@ class base_test extends uvm_test;
 
     endtask
 
+    virtual function void report_phase(uvm_phase phase);
+        uvm_report_server server = uvm_report_server::get_server();
+        int err_num = server.get_severity_count(UVM_ERROR);
+        int fatal_num = server.get_severity_count(UVM_FATAL);
+
+        string green = "\033[32m";
+        string red = "\033[31m";
+        string reset = "\033[0m";
+
+        if (err_num == 0 && fatal_num == 0) begin
+            `uvm_info("TEST_STATUS", $sformatf("\n---------------------------------------\n              %sTEST PASSED%s              \n---------------------------------------", green, reset), UVM_NONE)
+        end else begin
+            `uvm_error("TEST_STATUS", $sformatf("\n---------------------------------------\n              %sTEST FAILED%s              \n              ERRORS: %0d            \n---------------------------------------", red, reset, err_num))
+        end
+    endfunction
+
 endclass

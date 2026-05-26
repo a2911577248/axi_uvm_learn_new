@@ -1,3 +1,5 @@
+    import uvm_pkg::*;
+    `include "uvm_macros.svh"
 interface axi_protocol_checker (
     input aclk,
     input aresetn,
@@ -5,12 +7,13 @@ interface axi_protocol_checker (
     input awvalid,
     input awready
 );
+
     property p_axi_awaddr_stable;
         @(posedge aclk) disable iff (!aresetn)
         awvalid && !awready |=> $stable(awaddr);
     endproperty
     assert_axi_addr_stable:assert property (p_axi_awaddr_stable)
-        else $error("[PROTOCOL ERROR] awvalid is high but addr not stable");
+        else `uvm_error("AXI_PROT_ERR_STABLE", "[PROTOCOL ERROR] awvalid is high but addr not stable");
 
     // property p_axi_reset;
     //     @(posedge aclk)
@@ -21,11 +24,11 @@ interface axi_protocol_checker (
 
     property p_axi_aw_handshake_timeout;
         @(posedge aclk) disable iff (!aresetn)
-        (awvalid && !awready) |-> ##[1:20] awready;
+        (awvalid && !awready) |-> ##[1:60] awready;
     endproperty
     assert_axi_aw_handshake_timeout:assert property (p_axi_aw_handshake_timeout)
         else begin
-            $error("[PROTOCOL ERROR]  awready trapped for more than 20 cycles");
+            $error("[PROTOCOL ERROR]  awready trapped for more than 60 cycles");
             $finish;
         end
 

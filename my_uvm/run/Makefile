@@ -8,7 +8,7 @@ CFG_FILE = ../cases/$(tc)/sim.cfg
 # 改成管道串联，避免在 shell 函数里使用正则表达式的圆括号
 SIM_ARGS = $(shell if [ -f $(CFG_FILE) ]; then grep -v '^[[:space:]]*//' $(CFG_FILE) | grep -v '^[[:space:]]*\#' | tr '\n' ' '; fi)
 
-.PHONY: com sim verdi all
+.PHONY: com sim verdi all regression
 
 com:
 	vcs -sverilog -ntb_opts uvm -full64 -f file.list -debug_access+all 2>&1 | tee compile.log
@@ -29,3 +29,13 @@ verdi:
 	verdi -sv -f file.list -ssf tb.fsdb &
 
 all: com sim
+
+# Discover all case directories under ../cases (basename only)
+CASES := $(shell if [ -d ../cases ]; then for d in ../cases/*; do [ -d "$$d" ] && basename "$$d"; done; fi)
+
+# Optional case list file (one case name per line). If present, regress will use it.
+CASE_LIST := case.list
+
+regression: com
+	@echo "Starting regression (runner)..."
+	@bash regress_runner.sh
