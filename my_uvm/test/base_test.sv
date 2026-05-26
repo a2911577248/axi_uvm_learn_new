@@ -5,6 +5,7 @@ class base_test extends uvm_test;
     `uvm_component_utils(base_test)
 
     axi_env env;
+    axi_config cfg;
     virtual axi_interface vif;
 
     function new(string name, uvm_component parent);

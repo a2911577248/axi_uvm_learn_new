@@ -5,7 +5,7 @@ class axi_driver extends uvm_driver #(axi_trans);
     `uvm_component_utils(axi_driver)
 
     virtual axi_interface vif;
-
+    axi_config axi_cfg;
     function new(string name, uvm_component parent);
         super.new(name, parent);
     endfunction
@@ -15,6 +15,11 @@ class axi_driver extends uvm_driver #(axi_trans);
         
         if(!uvm_config_db#(virtual axi_interface)::get(this, "", "vif", vif))begin
             `uvm_fatal("drv", "Cannot get virtual interface from uvm_config_db!")
+        end
+
+        if(!uvm_config_db#(axi_config)::get(this,"","axi_cfg",axi_cfg))begin
+            `uvm_info("DRV", "No config found, using default config", UVM_LOW)
+            axi_cfg = axi_config::type_id::create("axi_cfg");
         end
     endfunction
 
@@ -43,6 +48,9 @@ class axi_driver extends uvm_driver #(axi_trans);
                     //AW
                     begin
                         @(posedge vif.aclk);
+                        if (axi_cfg.delay_en) begin
+                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
+                        end
                         vif.awvalid <= 1;
                         vif.awaddr <= req.addr;
 
@@ -56,6 +64,9 @@ class axi_driver extends uvm_driver #(axi_trans);
                     //W
                     begin
                         @(posedge vif.aclk);
+                        if (axi_cfg.delay_en) begin
+                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
+                        end
                         vif.wvalid <= 1;
                         for(int i=0; i <= req.len; i=i+1)begin
                             vif.wdata <= req.data[i];
@@ -72,6 +83,9 @@ class axi_driver extends uvm_driver #(axi_trans);
                     //B
                     begin
                         @(posedge vif.aclk);
+                        if (axi_cfg.delay_en) begin
+                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
+                        end
                         vif.bready <= 1;
 
                         @(posedge vif.aclk iff vif.bvalid == 1'b1);
@@ -87,6 +101,9 @@ class axi_driver extends uvm_driver #(axi_trans);
                     //AR
                     begin
                         @(posedge vif.aclk);
+                        if (axi_cfg.delay_en) begin
+                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
+                        end
                         vif.arvalid <= 1;
                         vif.araddr <= req.addr;
 
@@ -100,6 +117,9 @@ class axi_driver extends uvm_driver #(axi_trans);
                     //R
                     begin
                         @(posedge vif.aclk);
+                        if (axi_cfg.delay_en) begin
+                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
+                        end
                         vif.rready <= 1;
 
                         for(int i=0; i <= req.len; i = i + 1)begin
