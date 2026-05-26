@@ -1,4 +1,5 @@
 ../axi_trans.sv
+../axi_config.sv
 ../axi_monitor.sv
 ../driver/axi_driver.sv
 ../driver/axi_slave_driver.sv
