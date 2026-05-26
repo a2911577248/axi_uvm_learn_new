@@ -5,6 +5,7 @@ interface axi_4k_boundary_checker(
     input aclk,
     input aresetn,
     input awvalid,
+    input awready,
     input [31:0]awaddr,
     input [7:0] awlen,
     input [2:0] awsize
@@ -20,7 +21,7 @@ interface axi_4k_boundary_checker(
 
     property p_4k_boundary;
         @(posedge aclk) disable iff (!aresetn)
-        awvalid |-> awaddr[31:12] == end_addr[31:12];
+        (awvalid && awready) |-> awaddr[31:12] == end_addr[31:12];
     endproperty
 
     a_4k_boundary:assert property (p_4k_boundary)

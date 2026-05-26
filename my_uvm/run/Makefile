@@ -1,5 +1,5 @@
 # 默认跑的基础 case 名称。可以在命令行通过 `make sim tc=你的case名` 来覆盖
-tc ?= tc_basic
+tc ?= tc_base
 
 # 指向对应的 sim.cfg 文件
 CFG_FILE = ../cases/$(tc)/sim.cfg
