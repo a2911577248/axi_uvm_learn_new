@@ -11,6 +11,7 @@
 ../checker/axi_4k_boundary_checker.sv
 
 ../sequence/basic_sequence.sv
+../sequence/axi_base_err_inject_seq.sv
 ../sequence/axi_violation_seq.sv
 ../test/base_test.sv
 
