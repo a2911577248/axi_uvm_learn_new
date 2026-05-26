@@ -1,0 +1,4 @@
+﻿/run/*
+!/run/file.list
+!/run/Makefile
+!/run/regress_runner.sh

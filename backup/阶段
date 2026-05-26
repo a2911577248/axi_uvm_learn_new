@@ -1,0 +1,99 @@
+﻿太棒了！用搭建 AXI 验证环境来学习 UVM 是一个非常经典且实用的路径。
+
+结合你提供的 `axi.txt`（AXI 验证全景地图）和 `karpathy-guidelines`（Karpathy 的高效编程指导原则），我为你制定了一套**“目标驱动、由简入深”**的 UVM 学习与实战计划。
+
+我们将严格遵循**“简洁优先”**和**“目标驱动执行”**的原则：不一开始就写一个支持乱序、Outstanding 和全类型 Burst 的庞大环境，而是把大目标拆解为每一步都**可验证（Verifiable）**的小目标。
+
+以下是我们接下来要逐步攻克的学习计划：
+
+### 🎯 AXI-UVM 验证环境搭建实战计划
+
+#### **阶段 1：UVM 骨架与 Transaction 定义 (化繁为简)**
+*   **目标**：建立 UVM 树形结构，定义最基础的 AXI 事务。
+*   **行动**：
+    1. 编写最基础的 `axi_trans` 类（参考你的 `axi.txt`，但先只关注地址、数据、读写控制等核心字段）。
+    2. 搭建空的 UVM 环境骨架（`env`, `agent`, `driver`, `monitor`, `sequencer`）。
+    3. 编写一个最简单的 `test` 和 `sequence`，只做例化和打印。
+*   **验证标准 (Verify)**：代码编译通过，仿真能正常跑完 UVM phase 并打印出 `axi_trans` 的信息（Hello World 级别）。
+
+#### **阶段 2：Master 驱动与单步握手 (聚焦五通道)**
+*   **目标**：实现 Master Driver，完成最简单的写操作（单拍，无 Burst，无 Outstanding）。
+*   **行动**：
+    1. 定义 `axi_interface`。
+    2. 在 Master Driver 中实现 `AW`、`W` 和 `B` 通道的独立驱动逻辑（使用 `fork...join_none`，遵循 VALID/READY 握手铁律）。
+    3. 编写一个写操作的 Sequence。
+    4. 暂时用一个简单的 Dummy Slave（或者直接在 testbench 顶层写几行代码）来给 READY 响应。
+*   **验证标准 (Verify)**：拉出波形，看到 AW、W 通道成功拉高 VALID，并在 READY 拉高后正确握手，最后收到 B 通道响应。
+
+#### **阶段 3：Slave 响应与完整闭环 (验证闭环)**
+*   **目标**：完成 Slave Agent，并实现读写闭环。
+*   **行动**：
+    1. 编写 Slave Driver，实现接收请求并返回响应，内部维护一个简单的 Memory 数组（`bit [7:0] mem [longint unsigned]`）。
+    2. 在 Master Driver 中补充 `AR` 和 `R` 通道的驱动。
+    3. 编写 Sequence：先往地址 A 写数据，再从地址 A 读数据。
+*   **验证标准 (Verify)**：波形显示写操作和读操作均成功握手，且读出的数据与写入的数据在波形上一致。
+
+#### **阶段 4：Monitor 与 Scoreboard (解耦与自动化检查)**
+*   **目标**：实现自动化比对，取代人工看波形。
+*   **行动**：
+    1. 完善 Monitor，将被动采集的总线信号组装成完整的 `axi_trans`。
+    2. 通过 Analysis Port 将 trans 发送给 Scoreboard。
+    3. 编写 Scoreboard，维护一个 Reference Model，比对 Master 读回的数据与预期是否一致。
+*   **验证标准 (Verify)**：
+    *   正常读写时，Scoreboard 打印 "MATCH"。
+    *   故意在 Slave 中注入错误数据，Scoreboard 能准确报错 "MISMATCH"。
+
+#### **阶段 5：协议检查器 Checker 分离 (精准隔离)**
+*   **目标**：落实 `axi.txt` 中“Checker 不一定要塞进 Monitor 里”的工程化设计。
+*   **行动**：
+    1. 新建 `axi_protocol_checker.sv`，用 SVA（SystemVerilog Assertions）编写最基础的断言，如 `AWVALID && !AWREADY |=> $stable(AWADDR)`。
+    2. 用 `bind` 语法将 Checker 绑定到 `axi_interface`。
+*   **验证标准 (Verify)**：故意在 Sequence 中写一段违规的时序（比如没握手就变地址），验证断言能否立刻触发 Error。
+
+#### **阶段 6：完善基础接口与 Burst 传输 (从单拍到连发)**
+*   **目标**：当前你的 `axi_interface.sv` 只有基础的地址和数据通道信号，需要扩充信号以支持连续数据传输（Burst）。
+*   **行动**：
+    1. 在 `axi_interface.sv` 中，增加 Burst 相关信号：`awlen`, `awsize`, `awburst`, `wlast`, `strb` 等，以及对应的读通道信号。
+    2. 扩展 `axi_trans.sv`，添加 `len`, `size`, `burst` 字段，并将单一的 `data` 修改为动态数组 `data[]`。
+    3. 修改 `axi_driver.sv` 的 Write 逻辑，在 AW 通道发送后，利用 `req.len` 循环发送 `wdata`，并在最后一拍拉高 `wlast`。对读操作类似处理 `rlast`。
+    4. 升级 `axi_slave_driver.sv` 中的纯关联数组 `mem`，使其利用 `awburst` 等信号自增地址，处理一连串的写入。
+    5. 新建 `axi_burst_checker.sv` 绑定到 interface 检查 `wlast` 必须严格在 `len + 1` 拍出现。
+*   **验证标准 (Verify)**：编写只包含 INCR 类型的 Burst Sequence，波形展示 WLAST 准确握手，`axi_scoreboard.sv` 比对多数据拍结果全部 `MATCH`。
+
+#### **阶段 7：高级传输属性、窄传输与 4KB 边界测试 (边界与安全)**
+*   **目标**：覆盖真实芯片中常遇到的非4字节对齐、小于总线位宽传输及跨边界场景。
+*   **行动**：
+    1. 在 `axi_trans.sv` 中基于 `addr` 与 `len` 增加约束，编写一个刚好压在 4KB (`'h1000` 倍数) 边界及跨越 4KB 产生错误的 Sequence。
+    2. 加入对非对齐地址 (如 `'h101` 读 4 Bytes) 的读写支持，并根据接口位宽配置 `strb` 信号。
+    3. 完善 `axi_slave_driver.sv` 和 `axi_driver.sv` 以便驱动/处理 `OKAY`, `SLVERR`, `DECERR` 等响应状态码 ('b00, 'b10, 'b11)。
+    4. 新增 `axi_boundary_checker.sv` 断言：当 `(start_addr & 12'hFFF) + bytes_in_burst > 12'h1000` 时必须立刻报错拦截。
+*   **验证标准 (Verify)**：注入非法 4KB 跨界访问，Checker 立刻报错；正常窄位宽和边界测试数据比对无误。
+
+#### **阶段 8：反压 (Backpressure) 与高频随机握手 (协议强健性)**
+*   **目标**：你的 `axi_slave_driver.sv` 目前直接是 `vif.wready <= 1` 等待。必须验证五通道在复杂的 READY 阻塞与高度随机延迟下不挂死、不丢包。
+*   **行动**：
+    1. 修改 `axi_slave_driver.sv`，使其 `awready`，`wready` 等五个通道随时插入随机的 Stall (比如随机 `repeat(5) @(posedge aclk)`) 再拉高。
+    2. 在 Master `axi_driver.sv` 端同样随机控制 VALID 拉起的节奏。
+    3. 在 `axi_protocol_checker.sv` 中确保现有的 `awready trapped for more than 20 cycles` 这类断言，改成更大的超时约束，以防假报错。
+*   **验证标准 (Verify)**：重度随机的反压导致波形断断续续，但 Sequence 跑完后 Scoreboard 数据无丢失漏比对，不出现协议违规。
+
+#### **阶段 9：Outstanding 与 ID 乱序返回 (高性能并发)**
+*   **目标**：当前你 Driver 中的 `fork / join` (比如 AW 和 W 并行，但发完才接下一个包) 是阻塞式的，要打破它，实现真正的乱序流水线。
+*   **行动**：
+    1. 在接口和 `axi_trans.sv` 中增加 ID 字段（如 `awid`, `bid`, `arid`, `rid`）。
+    2. 彻底重构 `axi_driver.sv` 和 `axi_slave_driver.sv`。例如 Master Driver 用独立的循环线程取请求并发出 AW 和 W，不需要等 B 通道回来就继续接受下一个 Seq 包（实现 Outstanding）。
+    3. 在 `axi_scoreboard.sv` 中构建按 ID 查询的 Queue/Map (例如 `queue[id]`)，以比对可能会乱序抵达的读响应 (`R`)。
+    4. 开发 `axi_id_order_checker.sv`，用队列结合断言检查“同 ID 必须保序，不同 ID 允许多重乱序”，并监控最大 Outstanding 数值不超标。
+*   **验证标准 (Verify)**：连续发送 10 笔不同的 Outstanding 请求；波形展示 ID 交错传递，Scoreboard 处理 B 与 R 完美匹配。
+
+#### **阶段 10：功能覆盖率，高阶属性与大规模回归 (收尾交付)**
+*   **目标**：根据 `指导文件`，基于 Coverage 完成量体验收。
+*   **行动**：
+    1. 收尾 `axi_trans.sv` 中最后一部分信号，如 Cache 控制 (`AxCACHE`)、保护机制 (`AxPROT`)。
+    2. 新建独立的 `axi_coverage.sv`，将 `axi_monitor` 广播出来的 `axi_trans` 取出并做 Covergroup。
+    3. 重点对 `axi_trans` 编写 Cross Coverage（交叉覆盖率），例如: `burst` x `len`, `id` x `outstanding` 等。
+    4. 添加脚本支持批量运行并自动分析覆盖率报告文件。
+*   **验证标准 (Verify)**：跑一场包含前向所有 Sequence 的全面 Regression 测试，UVM 覆盖率报告展示指定 Cross Coverpoint 达到 100%。
+
+---
+
