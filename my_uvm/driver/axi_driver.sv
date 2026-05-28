@@ -65,12 +65,16 @@ class axi_driver extends uvm_driver #(axi_trans);
     endtask
 
     virtual task drive_aw();
+        vif.awvalid <= 1'b0;
         forever begin
             axi_trans tr;
-            wait(aw_q.size() > 0);
+            if (aw_q.size() == 0) begin
+                vif.awvalid <= 1'b0;
+                wait(aw_q.size() > 0);
+                @(posedge vif.aclk); // 仅在空闲唤醒时对齐时钟
+            end
             tr = aw_q.pop_front();
 
-            @(posedge vif.aclk);
             if(axi_cfg.aw_delay_en && ($urandom_range(0, 100) < 30)) begin 
                 vif.awvalid <= 0;
                 repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk); 
@@ -84,16 +88,19 @@ class axi_driver extends uvm_driver #(axi_trans);
             vif.awsize <= tr.size;
             @(posedge vif.aclk iff vif.awready == 1'b1);
 
-            if (aw_q.size() == 0) begin
-                vif.awvalid <= 0;
-            end
         end
     endtask
     
     virtual task drive_w();
         forever begin
             axi_trans tr;
-            wait(w_q.size() > 0);
+            if (w_q.size() == 0) begin
+                vif.wvalid <= 0;
+                vif.wlast <= 0;
+                vif.wstrb <= 0;
+                wait(w_q.size() > 0);
+                @(posedge vif.aclk); // 仅在空闲唤醒时对齐时钟
+            end
             tr = w_q.pop_front();
 
             for(int i=0; i <= tr.len; i=i+1)begin
@@ -106,12 +113,6 @@ class axi_driver extends uvm_driver #(axi_trans);
                 vif.wstrb <= tr.wstrb[i];
                 vif.wlast <= (i == tr.len);
                 @(posedge vif.aclk iff vif.wready == 1'b1);
-            end
-
-            if (w_q.size() == 0) begin
-                vif.wvalid <= 0;
-                vif.wlast <= 0;
-                vif.wstrb <= 0;
             end
         end
     endtask
@@ -132,7 +133,11 @@ class axi_driver extends uvm_driver #(axi_trans);
     virtual task drive_ar();
         forever begin
             axi_trans tr;
-            wait(ar_q.size() > 0);
+            if (ar_q.size() == 0) begin
+                vif.arvalid <= 1'b0;
+                wait(ar_q.size() > 0);
+                @(posedge vif.aclk); // 仅在空闲唤醒时对齐时钟
+            end
             tr = ar_q.pop_front();
 
             if(axi_cfg.ar_delay_en && ($urandom_range(0, 100) < 30)) begin 
@@ -148,9 +153,6 @@ class axi_driver extends uvm_driver #(axi_trans);
             vif.arburst <= tr.burst;
             @(posedge vif.aclk iff vif.arready == 1'b1);
 
-            if (ar_q.size() == 0) begin
-                vif.arvalid <= 0;
-            end
         end 
     endtask
 
