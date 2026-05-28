@@ -1,3 +1,5 @@
+//不支持先w后aw
+
 import uvm_pkg::*;
 `include "uvm_macros.svh"
 
@@ -6,6 +8,13 @@ class axi_monitor extends uvm_monitor;
 
     virtual axi_interface vif;
     uvm_analysis_port#(axi_trans) ap; 
+
+    axi_trans pending_writes[int][$];
+    axi_trans pending_reads[int][$];
+
+    int w_expected_q[$];
+
+    int r_beat_cnt[int];
 
     function new(string name, uvm_component parent);
         super.new(name, parent);
@@ -22,84 +31,115 @@ class axi_monitor extends uvm_monitor;
     virtual task run_phase(uvm_phase phase);
         super.run_phase(phase);
         wait(vif.aresetn == 1'b1);
-
-
-
         fork
-            //R
-            forever begin
-                axi_trans trans;
-                logic [31:0]temp_addr;
-                logic [7:0] temp_len;
-                logic [2:0] temp_size;
-                logic [1:0] temp_resp;
-
-                @(posedge vif.aclk iff (vif.arready && vif.arvalid));
-                temp_addr = vif.araddr;
-                temp_len  = vif.arlen;
-                temp_size = vif.arsize;
-
-                trans = axi_trans::type_id::create("trans"); 
-                trans.data = new[temp_len + 1];
-                
-                for(int i = 0; i <= temp_len; i++) begin
-                    @(posedge vif.aclk iff (vif.rready && vif.rvalid));
-                    trans.data[i] = vif.rdata;
-                    if (i == temp_len) temp_resp = vif.rresp;
-                end
-
-                trans.addr = temp_addr;
-                trans.len  = temp_len;
-                trans.size = temp_size;
-                trans.is_write = 0;
-                trans.resp = temp_resp;
-                ap.write(trans);
-                foreach(trans.data[i])begin
-                    //`uvm_info("MON", $sformatf("Captured READ: Addr='h%0h, Data size=%0d, Data[%0d]='h%0h", trans.addr, trans.data.size(),i ,trans.data[i]), UVM_LOW)
-                end
-            end
-
-            //W
-            forever begin
-                axi_trans trans;
-                logic [31:0]temp_addr;
-                logic [7:0] temp_len;
-                logic [2:0] temp_size;
-                logic [3:0] temp_wstrb;
-                logic [1:0] temp_resp; 
-
-                //AW
-                @(posedge vif.aclk iff (vif.awready && vif.awvalid));
-                temp_addr = vif.awaddr;
-                temp_len = vif.awlen;
-                temp_size = vif.awsize;
-
-                trans = axi_trans::type_id::create("trans");
-                trans.data = new[temp_len + 1];
-
-                for(int i=0; i <= temp_len; i = i+1)begin
-                    @(posedge vif.aclk iff (vif.wready && vif.wvalid));
-                    temp_wstrb = vif.wstrb;
-                    trans.data[i] = vif.wdata;                    
-                end
-
-                //B
-                @(posedge vif.aclk iff (vif.bready && vif.bvalid));
-                temp_resp = vif.bresp;
-
-                trans.addr = temp_addr;
-                trans.len = temp_len;
-                trans.size = temp_size;
-                trans.wstrb = temp_wstrb;
-                trans.is_write = 1;
-                trans.resp = temp_resp;
-                ap.write(trans);
-               // `uvm_info("MON", $sformatf("Captured WRITE: Addr='h%0h, Data='h%0h", trans.addr, trans.data), UVM_LOW)
-            end           
-
+            mon_aw();
+            mon_w();
+            mon_b();
+            mon_ar();
+            mon_r();
         join
-
     endtask
 
+    virtual task mon_aw();
+        forever begin
+            axi_trans tr;
+            @(posedge vif.aclk iff (vif.awvalid && vif.awready));
+            tr = axi_trans::type_id::create("tr");
+            tr.is_write = 1;
+            tr.id = vif.awid;
+            tr.addr = vif.awaddr;
+            tr.len = vif.awlen;
+            tr.size = vif.awsize;
+            tr.burst = vif.awburst;
+            tr.data = new[tr.len + 1];
+
+            pending_writes[tr.id].push_back(tr);
+            w_expected_q.push_back(tr.id);
+        end
+    endtask
+
+    virtual task mon_w();
+        int w_beat = 0;
+        forever begin
+            int current_id;
+            axi_trans tr;
+            @(posedge vif.aclk iff (vif.wready && vif.wvalid));
+            if(w_expected_q.size() > 0)begin
+                current_id = w_expected_q[0];
+                tr = pending_writes[current_id][0];
+
+                tr.data[w_beat] = vif.wdata;
+                tr.wstrb = vif.wstrb; //简化处理
+
+                if(vif.wlast)begin
+                    w_beat = 0;
+                    void'(w_expected_q.pop_front());
+                end else begin
+                    w_beat = w_beat + 1;
+                end
+            end else begin
+                `uvm_error("MON_W", "Received w data but w_expected_q is empty!!")
+            end
+        end
+    endtask
+
+    virtual task mon_b();
+        forever begin
+            axi_trans tr;
+            @(posedge vif.aclk iff (vif.bvalid && vif.bready));
+            if(pending_writes.exists(vif.bid) && pending_writes[vif.bid].size() > 0)begin
+                tr = pending_writes[vif.bid].pop_front();
+                tr.resp = vif.bresp;
+                ap.write(tr);
+            end else begin
+                `uvm_error("MON_B", $sformatf("Received B response for unknown ID %0h", vif.bid))
+            end
+        end
+    endtask
+
+    virtual task mon_ar();
+        forever begin
+            axi_trans tr;
+            @(posedge vif.aclk iff (vif.arvalid && vif.arready));
+            tr = axi_trans::type_id::create("tr");
+            tr.is_write = 0;
+            tr.id = vif.arid;
+            tr.addr = vif.araddr;
+            tr.len = vif.arlen;
+            tr.size = vif.arsize;
+            tr.burst = vif.arburst;
+            tr.data = new[vif.arlen + 1];
+
+            pending_reads[tr.id].push_back(tr);
+        end
+    endtask
+
+    virtual task mon_r();
+        forever begin
+            int beat;
+            axi_trans tr;
+            @(posedge vif.aclk iff (vif.rready && vif.rvalid));
+            if(pending_reads.exists(vif.rid) && pending_reads[vif.rid].size() > 0)begin
+                tr = pending_reads[vif.rid][0];
+
+                if(!r_beat_cnt.exists(vif.rid)) r_beat_cnt[vif.rid] = 0;
+                beat = r_beat_cnt[vif.rid];
+
+                tr.data[beat] = vif.rdata;
+                if(vif.rlast) tr.resp = vif.rresp;
+
+                if(vif.rlast) begin
+                    tr = pending_reads[vif.rid].pop_front();
+                    r_beat_cnt.delete(vif.rid);
+                    ap.write(tr);
+                    // `uvm_info("MON", $sformatf("Captured READ: ID=%0h, Addr='h%0h", tr.id, tr.addr), UVM_LOW)
+                end else begin
+                    r_beat_cnt[vif.rid] = r_beat_cnt[vif.rid] + 1;
+                end
+            end else begin
+                `uvm_error("MON_R", $sformatf("Received R data for unknown ID %0h", vif.rid))
+            end
+        end
+    endtask
 
 endclass

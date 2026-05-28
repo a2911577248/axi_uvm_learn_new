@@ -1,0 +1,213 @@
+05/28/2026 10:13:06 (snpslmd) INFO: Pooling on VENDOR_STRING is Disabled (to enable, set SCL_POOL_VS=1)
+05/28/2026 10:13:06 (snpslmd) Synopsys Corporate Licensing (SCL) Release: version SCL_2024.06
+05/28/2026 10:13:06 (snpslmd) INFO: License sanity check enabled (360)
+05/28/2026 10:13:06 (snpslmd) INFO: File descriptor limit (soft, hard) for snpslmd: 262144, 262144
+05/28/2026 10:13:06 (snpslmd) INFO: TCP - tcp_keepalive_time - 7200 | tcp_keepalive_intvl - 75 | tcp_keepalive_probes - 9 | tcp_fin_timeout - 60 | net.ipv4.tcp_max_syn_backlog=1024 | net.core.somaxconn=2048
+
+05/28/2026 10:13:06 (snpslmd) INFO: Cloud detection enabled. 1
+10:13:06 (snpslmd) SLOG: Summary LOG statistics is enabled.
+10:13:06 (snpslmd) SLOG: FNPLS-INTERNAL-CKPT1
+10:13:06 (snpslmd) SLOG: VM Status: 4
+10:13:06 (snpslmd) SLOG: FNPLS-INTERNAL-CKPT5
+10:13:06 (snpslmd) SLOG: TPM Status: 0
+10:13:06 (snpslmd) SLOG: FNPLS-INTERNAL-CKPT6
+10:13:06 (snpslmd) Server started on localhost.localdomain for:	SSS		
+10:13:06 (snpslmd) EUCLIDE-GUI	EUCLIDE-INTR-LINT DWC-ETHERNET-XPCS-V3_30 
+10:13:06 (snpslmd) DWC-ETHERNET-XPCS-V3_40 DWC-ETHERNET-XPCS-V3_50 DWC-ETHERNET-XPCS-MULTIPORT 
+10:13:06 (snpslmd) DWC-AC-ETHERNET-XPCS DWC-XGXS-PCS	DWC-ETHER-AP-ENTERPRISE-PCS 
+10:13:06 (snpslmd) DWC-ETHER-ENTERPRISE-PCS DWC-XGMAC	DWC-AC-ETHERNET-XGMAC 
+10:13:06 (snpslmd) DWC-XGMAC-SRC	DWC-XGMAC-V2_20 DWC-XGMAC-V3_20 
+10:13:06 (snpslmd) DWC-ETHERNET-XGMAC-V3_00 DWC-ETHERNET-XGMAC-V3_10 DWC-ETHERNET-XGMAC-V3_20 
+10:13:06 (snpslmd) DWC-Ether-XGMAC-RxParser DWC-Ether-XGMAC-TSN1 DWC-AMBA-Fabric-Source 
+10:13:06 (snpslmd) DWC-DMAC-Source DWC-APB-Periph-Source DWC-APB-Advanced-Source 
+10:13:06 (snpslmd) DWC-PCIE	DWC-PCIE-V5_00	DWC-PCIE-G4-STND-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G4-STND-A-V2-SRC DWC-PCIE-G4-PLUS-A-V2-SRC DWC-AC-CCIX-G25-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-AP-CCIX-G25-PREM-A-V2-SRC DWC-PCIE-4-EP-H DWC-PCIE-4-EP-H-SRC 
+10:13:06 (snpslmd) DWC-CXL-PREM-A-SRC DWC-PCIE-4-EP-L DWC-PCIE-4-EP-L-SRC 
+10:13:06 (snpslmd) DWC-PCIE-4-EP-E DWC-PCIE-4-EP-E-SRC DWC-CCIX-25-EP-H 
+10:13:06 (snpslmd) DWC-CCIX-25-EP-H-SRC DWC-PCIE-G1-STND-A-SRC DWC-PCIE-G1-PLUS-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G1-STND-N-SRC DWC-PCIE-G1-PLUS-N-SRC DWC-PCIE-G2-STND-N-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G3-STND-A-SRC DWC-PCIE-G3-STND-N-SRC DWC-PCIE-G4-STND-N-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G5-STND-N-SRC DWC-AC-CCIX-G25-PREM-N-SRC DWC-PCIE-G4-PLUS-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G4-PREM-N-SRC DWC-PCIE-G4-PREM-A-SRC DWC-PCIE-G4-PREM-N-V2-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G4-PREM-A-V2-SRC DWC-AC-PCIE-G4-PREM-N-SRC DWC-AC-PCIE-G4-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-AP-PCIE-G4-PREM-N-SRC DWC-AP-PCIE-G4-PREM-A-SRC DWC-AP-PCIE-G4-PREM-N-V2-SRC 
+10:13:06 (snpslmd) DWC-AP-PCIE-G4-PREM-A-V2-SRC DWC-CCIX-G25-PREM-N-SRC DWC-CCIX-G25-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-CCIX-G25-PREM-N-V2-SRC DWC-CCIX-G25-PREM-A-V2-SRC DWC-AP-CCIX-G25-PREM-N-SRC 
+10:13:06 (snpslmd) DWC-AP-CCIX-G25-PREM-A-SRC DWC-AP-CCIX-G25-PREM-N-V2-SRC DWC-PCIE-GEN3-AFP 
+10:13:06 (snpslmd) DWC-PCIE-AFP	DWC-PCIE-GEN2-AFP DWC-PCIE-G4-PLUS-N-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G4-STND-N-V2-SRC DWC-PCIE-G4-PLUS-N-V2-SRC DWC-CXL-PREM-N-SRC 
+10:13:06 (snpslmd) DWC-CXL-20-PREM-N-SRC DWC-CXL-20-PREM-A-SRC DWC-PCIE-G4-PREM-A-HPC-SRC 
+10:13:06 (snpslmd) DWC-CXL-20-PREM-A-HPC-SRC DWC-USB4-PCIE-PREM-N-SRC DWC-USB4-PCIE-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-AXI	DWC-PCIE-AMBA	DWC-PCIE-AUTOMOTIVE 
+10:13:06 (snpslmd) DWC-CCIX-25-EP-L DWC-CCIX-25-EP-L-SRC DWC-XBIU-SAFETY 
+10:13:06 (snpslmd) DWC-PCIE-G1-PREM-A-SRC DWC-PCIE-G1-PREM-N-SRC DWC-PCIE-G2-STND-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G2-PLUS-A-SRC DWC-PCIE-G2-PREM-A-SRC DWC-PCIE-G2-PLUS-N-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G2-PREM-N-SRC DWC-PCIE-G3-PLUS-A-SRC DWC-PCIE-G3-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G3-PLUS-N-SRC DWC-PCIE-G3-PREM-N-SRC DWC-PCIE-G5-STND-A-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G5-PLUS-A-SRC DWC-PCIE-G5-PREM-A-SRC DWC-PCIE-G5-PLUS-N-SRC 
+10:13:06 (snpslmd) DWC-PCIE-G5-PREM-N-SRC DWC-CCIX-G32-PREM-A-SRC DWC-CCIX-G32-PREM-N-SRC 
+10:13:06 (snpslmd) DWC-AP-PCIE-G1-PREM-A-SRC DWC-AP-PCIE-G1-PREM-N-SRC DWC-AP-PCIE-G2-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-AP-PCIE-G2-PREM-N-SRC DWC-AP-PCIE-G3-PREM-A-SRC DWC-AP-PCIE-G3-PREM-N-SRC 
+10:13:06 (snpslmd) DWC-AP-PCIE-G5-PREM-A-SRC DWC-AP-PCIE-G5-PREM-N-SRC DWC-AC-PCIE-G2-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-AC-PCIE-G2-PREM-N-SRC DWC-AC-PCIE-G3-PREM-A-SRC DWC-AC-PCIE-G3-PREM-N-SRC 
+10:13:06 (snpslmd) DWC-AC-PCIE-G5-PREM-A-SRC DWC-AC-PCIE-G5-PREM-N-SRC DWC-AP-CCIX-G32-PREM-A-SRC 
+10:13:06 (snpslmd) DWC-AP-CCIX-G32-PREM-N-SRC DWC-PCIE-G5-PREM-A-HPC-SRC ts28nph41p10asdvl01ms 
+10:13:06 (snpslmd) ts28nph41p10asdvl01ms_fe ts28nph41p10asdvl01ms_be ts28nph41p11sad2l02ms 
+10:13:06 (snpslmd) ts28nph41p11sad2l02ms_fe ts28nph41p11sad2l02ms_be ts28nph41p11sadgl128s 
+10:13:06 (snpslmd) ts28nph41p11sadgl128s_fe ts28nph41p11sadgl128s_be ts28nph41p11sadtl128s 
+10:13:06 (snpslmd) ts28nph41p11sadtl128s_fe ts28nph41p11sadtl128s_be ts28nph41p11sasrl128s 
+10:13:06 (snpslmd) ts28nph41p11sasrl128s_fe ts28nph41p11sasrl128s_be ts28nph41p11sassl01ms 
+10:13:06 (snpslmd) ts28nph41p11sassl01ms_fe ts28nph41p11sassl01ms_be ts28nph42p11sadgl128s 
+10:13:06 (snpslmd) ts28nph42p11sadgl128s_fe ts28nph42p11sadgl128s_be ts28nph42p11sadul128s 
+10:13:06 (snpslmd) ts28nph42p11sadul128s_fe ts28nph42p11sadul128s_be ts28nph42p22sadsl01ms 
+10:13:06 (snpslmd) ts28nph42p22sadsl01ms_fe ts28nph42p22sadsl01ms_be VIP-AMBA3-SVT	
+10:13:06 (snpslmd) VIP-AMBA-SVT	VIP-AMBA-APB-SVT VIP-AMBA-AXI-SVT 
+10:13:06 (snpslmd) VIP-AMBA-AHB-SVT Synopsys	Synopsys-Release 
+10:13:06 (snpslmd) Synopsys-Queue	DesignWare	DesignWare-Foundation 
+10:13:06 (snpslmd) RTL-Architect	RTLA-Debug	RTL-Architect-Blk-Main 
+10:13:06 (snpslmd) PrimePower	PrimePower-RTL	3DIC-Compiler	
+10:13:06 (snpslmd) Lynx-TSL	Lynx-DS		Lynx-FRS	
+10:13:06 (snpslmd) ICCompilerII	ICCompilerII-NX Design-Compiler 
+10:13:06 (snpslmd) Design-Compiler-NXT DC64		DC-Beta		
+10:13:06 (snpslmd) DC-Cadence-Interface DC-Expert	DCExpert-PrimeTime 
+10:13:06 (snpslmd) DC-Extension	DC-Graphical	DC-Falcon-Interface 
+10:13:06 (snpslmd) DC-FPGA-Accelerator DC-FPGA-Add-On	DC-FPGA-Add-On-to-DC 
+10:13:06 (snpslmd) DC-FPGA-Features DC-Layout-Interface DCM-Delay-Calculation 
+10:13:06 (snpslmd) DC-Min-Area-Retime DC-SDF-Interface DC-Debug	
+10:13:06 (snpslmd) DCT-Congestion	DCT-GUI		DC-Topographical 
+10:13:06 (snpslmd) DC-Ultra	DC-Ultra-Features DC-Ultra-Opt	
+10:13:06 (snpslmd) DC-XG		HDL-Compiler	Power-Optimization 
+10:13:06 (snpslmd) BOA-BRT		Test-Compiler	Test-Compiler-Plus 
+10:13:06 (snpslmd) Test-DFTC-TMAX	Design-Vision	Design-Analyzer 
+10:13:06 (snpslmd) Test-CTL-Model	Design-Compiler-NXT-FuSa Test-Platform-RTL 
+10:13:06 (snpslmd) checker		oemunlock	BasePolicySO	
+10:13:06 (snpslmd) gui		save_restore	constraints_SDCgen 
+10:13:06 (snpslmd) constraints_SDCmerge constraints_soc_abstraction constraintsso	
+10:13:06 (snpslmd) constraints_mgmt constraints_modemerge dft_dsmso	
+10:13:06 (snpslmd) dft_soc_abstraction dftso		system_verilog	
+10:13:06 (snpslmd) txvso		vhdl		SG-Verdi-Plugin 
+10:13:06 (snpslmd) adv_checker	dashboard	datasheet	
+10:13:06 (snpslmd) Auto_Verify	Formality	Formality-DPX	
+10:13:06 (snpslmd) Formality-Ultra Formality-LogicECO Formality-Advanced 
+10:13:06 (snpslmd) Formality-Distributed Formality-DV	Formality-E1	
+10:13:06 (snpslmd) Formality-ESP	Formality-TransForm Formality-Transit 
+10:13:06 (snpslmd) Formality-TX	PrimeTime	PrimeTime-C-Interface 
+10:13:06 (snpslmd) PrimeTime-New-Technology PrimeTime-New-Technology8 ECO-New-Tech-Node-PC 
+10:13:06 (snpslmd) synplifypremier synplifypremierdp synplifypremierurc 
+10:13:06 (snpslmd) identdebugger	identinstrumentor SYNOPSYS_ANOMALY 
+10:13:06 (snpslmd) coreAssembler	DWC-coreAssembler coreConsultant	
+10:13:06 (snpslmd) DWC-coreConsultant coreBuilder	DWC-coreBuilder 
+10:13:06 (snpslmd) coreDeveloper	DWC-coreDeveloper VERDI-ULTRA	
+10:13:06 (snpslmd) Verdi		Verdi-2-Elite-Pkg VERDI-ELITE	
+10:13:06 (snpslmd) VERDI-SX	VerdiCoverage	VerdiFaultAnalysis 
+10:13:06 (snpslmd) VerdiPerformanceAnalyzer VERDISIGNOFF_CDC VERDISIGNOFF_LP 
+10:13:06 (snpslmd) VerdiSimDB	VerdiTransactionDebugUltra Verdi_HwSwDebug 
+10:13:06 (snpslmd) Verdi-1-Base-Pkg VERDISIGNOFF	SimVE		
+10:13:06 (snpslmd) VERDI_ENT	Vera		Vera_debug	
+10:13:06 (snpslmd) Vera_rtime	VCS-BASE-COMPILE VCS-BASE-RUNTIME 
+10:13:06 (snpslmd) VCSAMSCompiler	VCSAMSCompiler_Net VCSAMSRuntime	
+10:13:06 (snpslmd) VCSAMSRuntime_Net VCSCompile_Net	VCSCompile_Node 
+10:13:06 (snpslmd) VCSMXCompiler_Net VCSTools	VCSTools_Net	
+10:13:06 (snpslmd) VCSTools_Node	VCSCompiler	VCSCompiler_Net 
+10:13:06 (snpslmd) VCSCompiler_Node VCSDebugger	VCSDebugger_Net 
+10:13:06 (snpslmd) VCSDebugger_Node VCS-Express-Compile VCS-Express-Runtime 
+10:13:06 (snpslmd) VCSiCompile	VCSiCompile_Net VCSiCompile_Node 
+10:13:06 (snpslmd) VCSiCompiler	VCSiCompiler_Net VCSiCompiler_Node 
+10:13:06 (snpslmd) VCSiDebugger	VCSiDebugger_Net VCSiDebugger_Node 
+10:13:06 (snpslmd) VCSiRuntime	VCSiRuntime_Net VCSiRuntime_Node 
+10:13:06 (snpslmd) VCSiRuntimeLimited VCSiRuntimeLimited_Net VCSiRuntimeLimited_Node 
+10:13:06 (snpslmd) VCSlm_Hm	VCSlm_Hm_Net	VCSlm_Hm_Node	
+10:13:06 (snpslmd) VCSMXiRunTime_Net VCSMXRunTime_Net VCSNativeCode	
+10:13:06 (snpslmd) VCSNativeCode_Net VCSNativeCode_Node VCSOldPostProcDebugger_Net 
+10:13:06 (snpslmd) VCSOldPostProcDebugger_Node VCSParallelCompiler VCSParallelCompiler_Net 
+10:13:06 (snpslmd) VCSParallelCompiler_Node VCSParallelRuntime VCSParallelRuntime_Net 
+10:13:06 (snpslmd) VCSParallelRuntime_Node VCSParallelThread VCSParallelThread_Net 
+10:13:06 (snpslmd) VCSParallelThread_Node VCSPostProcDebugger VCSPostProcDebugger_Net 
+10:13:06 (snpslmd) VCSPostProcDebugger_Node VCSRuntime	VCSRuntime_Net	
+10:13:06 (snpslmd) VCSRuntime_Node VCSRuntimeLimited VCSRuntimeLimited_Net 
+10:13:06 (snpslmd) VCSRuntimeLimited_Node VT_Visual	VT_VSO_GEN	
+10:13:06 (snpslmd) VCS-ELITE-RUNTIME Delphi-Adyton	Delphi-Adyton-New-Tech-CRL 
+10:13:06 (snpslmd) VC-FORMAL-AEP	VC-FORMAL-CC	VC-FORMAL-FCA	
+10:13:06 (snpslmd) VC-FORMAL-FPV	VC-FORMAL-FRV	VC-FORMAL-FXP	
+10:13:06 (snpslmd) VC-FORMAL-SEQ	VC-SMART-SEARCH VC-STATIC-VERDI-PLUGIN 
+10:13:06 (snpslmd) VCFV-Verdi-Plugin Library-Compiler integrator	
+10:13:06 (snpslmd) builder		virtual_compiler verifier	
+10:13:06 (snpslmd) planner		si_browser	vmc		
+10:13:06 (snpslmd) em_leaf		em_pg		em_star		
+10:13:06 (snpslmd) em_ikos		em_vddmin	em_test_nwell	
+10:13:06 (snpslmd) em_ts28hpcp_overdrive em_ts28hpcp_underdrive 
+10:13:06 (snpslmd) 
+10:13:06 (snpslmd) Licenses are case sensitive for TE_CATS
+10:13:06 (snpslmd) 
+10:13:06 (snpslmd) EXTERNAL FILTERS are OFF
+10:13:06 (snpslmd) Serving features for the following vendor names:
+ snpslmd  ACAD  adalmd  anagram  arcd  atrenta  avantd  CADABRA  chrysalisd  cowared  doradod  EPIC  eved  extremed  fishtail  hscd  imperasd  innologd  ISE-TCADd  knights  magma  metasoftd  mwflexd  nassd  nsysnvs  numeritchd  pdld  perflmd  piketec  riod  saber_dmn  sandwork  sclmgrd  sftlmd  sigmacd  SIINT  simple  snpsOEM1  snslmgrd  ssilmd  synforad  synopsysd  synplctyd  targetld  TAVEREN  TE_CATS  tmald  vastlmd  vcsd  wlld  
+05/28/2026 10:13:07 (snpslmd) ------------------------------------------------------------------
+05/28/2026 10:13:07 (snpslmd) Checking the integrity of the license file...
+05/28/2026 10:13:07 (snpslmd) Valid SSS feature found.
+05/28/2026 10:13:07 (snpslmd) The feature is needed to enable the other keys in your license file.
+05/28/2026 10:13:07 (snpslmd) Licensed to RnD Moonl1ght Center, JSC
+05/28/2026 10:13:07 (snpslmd) Siteid: 17777, Server Hostid: 000c2903ab74, Issued on: 11/30/2026
+05/28/2026 10:13:07 (snpslmd) ------------------------------------------------------------------
+05/28/2026 10:13:10 (snpslmd) INFO: Server WAN NC data enabled
+10:13:10 (snpslmd) Changing message security level from -1 to 0
+10:13:10 (snpslmd) SLOG: Statistics Log Frequency is 240 minute(s).
+10:13:10 (snpslmd) SLOG: TS update poll interval is 0. TS update is detected by midnight reread only.
+10:13:10 (snpslmd) SLOG: Activation borrow reclaim percentage is 0.
+10:13:10 (snpslmd) (@snpslmd-SLOG@) ===============================================
+10:13:10 (snpslmd) (@snpslmd-SLOG@) === Vendor Daemon ===
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Vendor daemon: snpslmd
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Start-Date: Thu May 28 2026 10:13:10 CST
+10:13:10 (snpslmd) (@snpslmd-SLOG@) PID: 663787
+10:13:10 (snpslmd) (@snpslmd-SLOG@) VD Version: v11.19.6.0 build 293152 x64_linux ( build 293152 (ipv6))
+10:13:10 (snpslmd) (@snpslmd-SLOG@) 
+10:13:10 (snpslmd) (@snpslmd-SLOG@) === Startup/Restart Info ===
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Options file used: None
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Is vendor daemon a CVD: Yes
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Is FlexNet Licensing Service installed and compatible: No
+10:13:10 (snpslmd) (@snpslmd-SLOG@) FlexNet Licensing Service Version: -NA-
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Is TS accessed: No
+10:13:10 (snpslmd) (@snpslmd-SLOG@) TS access time: -NA-
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Number of VD restarts since LS startup: 8
+10:13:10 (snpslmd) (@snpslmd-SLOG@) 
+10:13:10 (snpslmd) (@snpslmd-SLOG@) === Network Info ===
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Listening port: 48259
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Daemon select timeout (in seconds): 1
+10:13:10 (snpslmd) (@snpslmd-SLOG@) 
+10:13:10 (snpslmd) (@snpslmd-SLOG@) === Host Info ===
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Host used in license file: localhost.localdomain
+10:13:10 (snpslmd) (@snpslmd-SLOG@) HostID node-locked in license file: 000c2903ab74 
+10:13:10 (snpslmd) (@snpslmd-SLOG@) HostID of the License Server: 000c2903ab74
+10:13:10 (snpslmd) (@snpslmd-SLOG@) Running on Hypervisor: Unknown Hypervisor
+10:13:10 (snpslmd) (@snpslmd-SLOG@) ===============================================
+10:13:10 (snpslmd) Ecomms: Encrypted Communication disabled
+10:13:10 (snpslmd) TCP_NODELAY NOT enabled
+10:13:10 (snpslmd) Listener Thread: running
+14:13:12 (snpslmd) (@snpslmd-SLOG@) ===============================================
+14:13:12 (snpslmd) (@snpslmd-SLOG@) === Last 10 Client Requests Processing Time (in ms) ===
+14:13:12 (snpslmd) (@snpslmd-SLOG@) Time: Thu May 28 2026 14:13:12 CST
+14:13:12 (snpslmd) (@snpslmd-SLOG@) Request processing time, when, #concurrent clients, client info (user, node, FD)
+14:13:12 (snpslmd) (@snpslmd-SLOG@) 
+14:13:12 (snpslmd) (@snpslmd-SLOG@) === Top 10 Peak Client Requests Processing Time (in ms) ===
+14:13:12 (snpslmd) (@snpslmd-SLOG@) Time: Thu May 28 2026 14:13:12 CST
+14:13:12 (snpslmd) (@snpslmd-SLOG@) Request processing time, when, #concurrent clients, client info (user, node, FD)
+14:13:12 (snpslmd) (@snpslmd-SLOG@) 
+14:13:12 (snpslmd) (@snpslmd-SLOG@) === Top 10 Peak In-house Operations time (in ms) ===
+14:13:12 (snpslmd) (@snpslmd-SLOG@) NOTE: Peak times greater than 4 seconds get recorded.
+14:13:12 (snpslmd) (@snpslmd-SLOG@) Time: Thu May 28 2026 14:13:12 CST
+14:13:12 (snpslmd) (@snpslmd-SLOG@) In-house operation time, when, #concurrent clients
+14:13:12 (snpslmd) (@snpslmd-SLOG@) 
+14:13:12 (snpslmd) (@snpslmd-SLOG@) === Active Connections Info ===
+14:13:12 (snpslmd) (@snpslmd-SLOG@) 
+14:13:12 (snpslmd) (@snpslmd-SLOG@) ===============================================
+15:51:03 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954663_hmain_p695386] 
+15:51:03 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954663_hmain_p695386] 
+15:51:21 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954681_hmain_p695779] 
+15:51:22 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954681_hmain_p695779] 
+15:51:36 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954696_hmain_p696167] 
+15:51:42 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954696_hmain_p696167] 
+15:51:42 (snpslmd) OUT: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954702_hmain_p696261] 
+15:51:43 (snpslmd) IN: "VCS-BASE-COMPILE" yian@localhost.localdomain  [snps_1779954702_hmain_p696261] 
+15:51:44 (snpslmd) OUT: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779954704_hmain_p696467] 
+15:59:22 (snpslmd) IN: "VCS-BASE-RUNTIME" yian@localhost.localdomain  [snps_1779954704_hmain_p696467] 

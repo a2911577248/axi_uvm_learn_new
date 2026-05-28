@@ -14,6 +14,8 @@ class axi_trans extends uvm_sequence_item;
     rand bit[1:0] resp;
     rand bit[3:0] wstrb;
 
+    rand bit[3:0] id;
+
 
 
     constraint c_brust{
@@ -25,6 +27,7 @@ class axi_trans extends uvm_sequence_item;
 
     `uvm_object_utils_begin(axi_trans)
         `uvm_field_int(is_write, UVM_ALL_ON)
+        `uvm_field_int(id, UVM_ALL_ON)
         `uvm_field_int(addr,     UVM_ALL_ON)
         `uvm_field_array_int(data, UVM_ALL_ON)
         `uvm_field_int(len,      UVM_ALL_ON)

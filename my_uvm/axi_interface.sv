@@ -1,6 +1,7 @@
 interface axi_interface(input aclk, input aresetn);
 
     //AW
+    logic [3:0]  awid;
     logic [31:0] awaddr;
     logic        awvalid;
     logic        awready;
@@ -18,12 +19,14 @@ interface axi_interface(input aclk, input aresetn);
     logic [3:0]  wstrb;
 
     //B
+    logic [3:0] bid;
     logic [1:0] bresp;
     logic       bvalid;
     logic       bready;
     
 
-
+    //AR
+    logic [3:0]  arid;
     logic        arvalid;
     logic        arready;
     logic [31:0] araddr;
@@ -32,6 +35,8 @@ interface axi_interface(input aclk, input aresetn);
     logic [2:0]  arsize;
     logic [1:0]  arburst;
 
+    //R
+    logic [3:0]  rid;
     logic        rvalid;
     logic        rready;
     logic [31:0] rdata;

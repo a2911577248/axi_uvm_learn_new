@@ -6,13 +6,17 @@ class axi_driver extends uvm_driver #(axi_trans);
 
     virtual axi_interface vif;
     axi_config axi_cfg;
+
+    axi_trans aw_q[$];
+    axi_trans w_q[$];
+    axi_trans ar_q[$];
+
     function new(string name, uvm_component parent);
         super.new(name, parent);
     endfunction
 
     virtual function void build_phase(uvm_phase phase);
         super.build_phase(phase);
-        
         if(!uvm_config_db#(virtual axi_interface)::get(this, "", "vif", vif))begin
             `uvm_fatal("drv", "Cannot get virtual interface from uvm_config_db!")
         end
@@ -25,13 +29,6 @@ class axi_driver extends uvm_driver #(axi_trans);
 
 
     virtual task run_phase(uvm_phase phase);
-        // forever begin
-        //     seq_item_port.get_next_item(req);  // 从 sequencer 获取一个包，存在 req 里
-
-        //     `uvm_info("drv", $sformatf("got transaction: is_write=%0b, addr='h%0h", req.is_write, req.addr), UVM_LOW)
-
-        //     seq_item_port.item_done();
-        // end
 
         vif.awvalid <= 0;
         vif.wvalid <= 0;
@@ -41,103 +38,139 @@ class axi_driver extends uvm_driver #(axi_trans);
 
         wait(vif.aresetn == 1'b1);
 
+        fork
+            get_and_dispatch();
+            drive_aw();
+            drive_w();
+            drive_b();
+            drive_ar();
+            drive_r();
+        join
+
+    endtask
+
+
+
+    virtual task get_and_dispatch();
         forever begin
             seq_item_port.get_next_item(req);
             if(req.is_write)begin
-                fork
-                    //AW
-                    begin
-                        @(posedge vif.aclk);
-                        if (axi_cfg.delay_en) begin
-                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
-                        end
-                        vif.awvalid <= 1;
-                        vif.awaddr <= req.addr;
-
-                        vif.awlen <= req.len;
-                        vif.awsize <= req.size;
-                        vif.awburst <= req.burst;
-
-                        @(posedge vif.aclk iff vif.awready == 1'b1);
-                        vif.awvalid <= 0;
-                    end
-                    //W
-                    begin
-                        @(posedge vif.aclk);
-                        if (axi_cfg.delay_en) begin
-                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
-                        end
-                        vif.wvalid <= 1;
-                        for(int i=0; i <= req.len; i=i+1)begin
-                            vif.wdata <= req.data[i];
-                            vif.wstrb <= req.wstrb;
-                            vif.wlast <= (i == req.len);
-                            @(posedge vif.aclk iff vif.wready == 1'b1);
-                        end
-                        vif.wvalid <= 1'b0;
-                        vif.wlast  <= 1'b0;                        
-                        vif.wstrb  <= '0;
-                    end
-
-
-                    //B
-                    begin
-                        @(posedge vif.aclk);
-                        if (axi_cfg.delay_en) begin
-                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
-                        end
-                        vif.bready <= 1;
-
-                        @(posedge vif.aclk iff vif.bvalid == 1'b1);
-                        vif.bready <= 0;
-                    end
-                join
-                `uvm_info("DRV", "Write Transaction Finished!", UVM_LOW)
-            end
-
-            if(req.is_write == 1'b0)begin
-                
-                fork
-                    //AR
-                    begin
-                        @(posedge vif.aclk);
-                        if (axi_cfg.delay_en) begin
-                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
-                        end
-                        vif.arvalid <= 1;
-                        vif.araddr <= req.addr;
-
-                        vif.arsize <= req.size;
-                        vif.arlen <= req.len;
-                        vif.arburst <= req.burst;
-
-                        @(posedge vif.aclk iff vif.arready == 1'b1);
-                        vif.arvalid <= 0;
-                    end
-                    //R
-                    begin
-                        @(posedge vif.aclk);
-                        if (axi_cfg.delay_en) begin
-                            repeat($urandom_range(0, axi_cfg.max_delay)) @(posedge vif.aclk); 
-                        end
-                        vif.rready <= 1;
-
-                        for(int i=0; i <= req.len; i = i + 1)begin
-                            @(posedge vif.aclk iff vif.rvalid);
-                            req.data[i] = vif.rdata;  //注意这里是=不是<=
-                        end
-                        vif.rready <= 0;
-                        //`uvm_info("DRV", $sformatf("transaction read: data=%0h",vif.rdata), UVM_LOW)
-                    end
-                    
-                join
-                `uvm_info("DRV", "Read Transaction Finished!", UVM_LOW)
+                aw_q.push_back(req);
+                w_q.push_back(req);
+            end else begin
+                ar_q.push_back(req);
             end
             seq_item_port.item_done();
         end
-
-
-
     endtask
+
+    virtual task drive_aw();
+        forever begin
+            axi_trans tr;
+            wait(aw_q.size() > 0);
+            tr = aw_q.pop_front();
+
+            @(posedge vif.aclk);
+            if(axi_cfg.aw_delay_en && ($urandom_range(0, 100) < 30)) begin 
+                vif.awvalid <= 0;
+                repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk); 
+            end
+
+            vif.awvalid <= 1'b1;
+            vif.awid <= tr.id;
+            vif.awaddr <= tr.addr;
+            vif.awburst <= tr.burst;
+            vif.awlen <= tr.len;
+            vif.awsize <= tr.size;
+            @(posedge vif.aclk iff vif.awready == 1'b1);
+
+            if (aw_q.size() == 0) begin
+                vif.awvalid <= 0;
+            end
+        end
+    endtask
+    
+    virtual task drive_w();
+        forever begin
+            axi_trans tr;
+            wait(w_q.size() > 0);
+            tr = w_q.pop_front();
+
+            for(int i=0; i <= tr.len; i=i+1)begin
+                if(axi_cfg.w_delay_en && ($urandom_range(0, 100) < 30)) begin 
+                    vif.wvalid <= 0;
+                    repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk); 
+                end
+                vif.wvalid <= 1'b1;
+                vif.wdata <= tr.data[i];
+                vif.wstrb <= tr.wstrb;
+                vif.wlast <= (i == tr.len);
+                @(posedge vif.aclk iff vif.wready == 1'b1);
+            end
+
+            if (w_q.size() == 0) begin
+                vif.wvalid <= 0;
+                vif.wlast <= 0;
+                vif.wstrb <= 0;
+            end
+        end
+    endtask
+
+    virtual task drive_b();
+        vif.bready <= 0;
+        forever begin
+            if (axi_cfg.b_delay_en && ($urandom_range(0, 100) < 30)) begin 
+                vif.bready <= 0;
+                repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk);
+            end
+            vif.bready <= 1;
+            @(posedge vif.aclk iff vif.bvalid == 1'b1);
+            `uvm_info("DRV", $sformatf("Write Transaction Finished! BID=%0h", vif.bid), UVM_HIGH)
+        end 
+    endtask
+
+    virtual task drive_ar();
+        forever begin
+            axi_trans tr;
+            wait(ar_q.size() > 0);
+            tr = ar_q.pop_front();
+
+            if(axi_cfg.ar_delay_en && ($urandom_range(0, 100) < 30)) begin 
+                vif.arvalid <= 0;
+                repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk); 
+            end
+
+            vif.arvalid <= 1;
+            vif.arid <= tr.id;
+            vif.araddr <= tr.addr;
+            vif.arlen <= tr.len;
+            vif.arsize <= tr.size;
+            vif.arburst <= tr.burst;
+            @(posedge vif.aclk iff vif.arready == 1'b1);
+
+            if (ar_q.size() == 0) begin
+                vif.arvalid <= 0;
+            end
+        end 
+    endtask
+
+    virtual task drive_r();
+        vif.rready <= 0;
+        forever begin
+            if(axi_cfg.r_delay_en && ($urandom_range(0, 100) < 30))begin
+                vif.rready <= 0;
+                repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk);
+            end
+
+            vif.rready <= 1'b1;
+            @(posedge vif.aclk iff vif.rvalid == 1'b1);
+
+            if (vif.rlast) begin
+                `uvm_info("DRV", $sformatf("Read Transaction Finished! RID=%0h", vif.rid), UVM_HIGH)
+            end
+        end
+    endtask
+
+
 
 endclass
