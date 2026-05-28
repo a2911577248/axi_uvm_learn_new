@@ -75,6 +75,7 @@ class axi_base_err_inject_seq extends basic_sequence;
     virtual task body();
         bit [31:0] cfg_waddr;
         bit [7:0]  cfg_wlen;
+        bit [2:0]  cfg_wsize;
 
         if(!uvm_config_db#(virtual axi_interface)::get(null, "*", "vif", vif))
             `uvm_fatal("SEQ_VIOLATION", "Failed to get virtual interface 'vif'")
@@ -87,6 +88,8 @@ class axi_base_err_inject_seq extends basic_sequence;
             cfg_wlen = 8'h03; 
         end
 
+        cfg_wsize = 3'b010;
+
         expect_assert_begin();
 
             begin
@@ -95,6 +98,7 @@ class axi_base_err_inject_seq extends basic_sequence;
                 if(!w_seq.randomize() with {
                     waddr == cfg_waddr;
                     wlen == cfg_wlen;
+                    wsize == cfg_wsize;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end
@@ -106,6 +110,7 @@ class axi_base_err_inject_seq extends basic_sequence;
                 if(!w_seq.randomize() with {
                     waddr == cfg_waddr;
                     wlen == cfg_wlen;
+                    wsize == cfg_wsize;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end
@@ -117,11 +122,14 @@ class axi_base_err_inject_seq extends basic_sequence;
                 if(!w_seq.randomize() with {
                     waddr == cfg_waddr;
                     wlen == cfg_wlen;
+                    wsize == cfg_wsize;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end
                 w_seq.start(get_sequencer(), this);
             end
+
+        repeat (3) @(posedge vif.aclk iff (vif.bvalid == 1'b1 && vif.bready == 1'b1));
 
         expect_assert_end();  
     endtask

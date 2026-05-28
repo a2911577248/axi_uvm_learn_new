@@ -12,7 +12,7 @@ class axi_trans extends uvm_sequence_item;
     rand bit[1:0]burst;
 
     rand bit[1:0] resp;
-    rand bit[3:0] wstrb;
+    rand bit[3:0] wstrb[];
 
     rand bit[3:0] id;
 
@@ -21,8 +21,9 @@ class axi_trans extends uvm_sequence_item;
     constraint c_brust{
         burst == 2'b01;
         data.size() == len + 1;
-        size == 3'b010;
-        wstrb == 4'b1111;
+        wstrb.size() == len + 1;
+        //size == 3'b010;
+        foreach(wstrb[i]) wstrb[i] == 4'b1111;
     }
 
     `uvm_object_utils_begin(axi_trans)
@@ -34,7 +35,7 @@ class axi_trans extends uvm_sequence_item;
         `uvm_field_int(size,     UVM_ALL_ON)
         `uvm_field_int(burst,    UVM_ALL_ON)
         `uvm_field_int(resp,     UVM_ALL_ON)
-        `uvm_field_int(wstrb,    UVM_ALL_ON)
+        `uvm_field_array_int(wstrb,    UVM_ALL_ON)
     `uvm_object_utils_end
 
     function new(string name = "axi_trans");

@@ -52,6 +52,7 @@ class axi_monitor extends uvm_monitor;
             tr.size = vif.awsize;
             tr.burst = vif.awburst;
             tr.data = new[tr.len + 1];
+            tr.wstrb = new[tr.len + 1];
 
             pending_writes[tr.id].push_back(tr);
             w_expected_q.push_back(tr.id);
@@ -66,19 +67,29 @@ class axi_monitor extends uvm_monitor;
             @(posedge vif.aclk iff (vif.wready && vif.wvalid));
             if(w_expected_q.size() > 0)begin
                 current_id = w_expected_q[0];
-                tr = pending_writes[current_id][0];
+                if(pending_writes.exists(current_id) && pending_writes[current_id].size() > 0)begin
+                    tr = pending_writes[current_id][0];
 
-                tr.data[w_beat] = vif.wdata;
-                tr.wstrb = vif.wstrb; //简化处理
+                    tr.data[w_beat] = vif.wdata;
+                    tr.wstrb[w_beat] = vif.wstrb; 
 
-                if(vif.wlast)begin
-                    w_beat = 0;
-                    void'(w_expected_q.pop_front());
+                    if(vif.wlast)begin
+                        w_beat = 0;
+                        void'(w_expected_q.pop_front());
+                    end else begin
+                        w_beat = w_beat + 1;
+                    end
                 end else begin
-                    w_beat = w_beat + 1;
+                    `uvm_warning("MON_W", "W data received but corresponding AW transaction not found - may indicate protocol violation")
+                    if(vif.wlast)begin
+                        w_beat = 0;
+                        void'(w_expected_q.pop_front());
+                    end else begin
+                        w_beat = w_beat + 1;
+                    end
                 end
             end else begin
-                `uvm_error("MON_W", "Received w data but w_expected_q is empty!!")
+                `uvm_warning("MON_W", "W data received but w_expected_q is empty - may indicate protocol violation or out-of-order write")
             end
         end
     endtask

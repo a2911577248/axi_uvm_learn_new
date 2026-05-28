@@ -103,7 +103,7 @@ class axi_driver extends uvm_driver #(axi_trans);
                 end
                 vif.wvalid <= 1'b1;
                 vif.wdata <= tr.data[i];
-                vif.wstrb <= tr.wstrb;
+                vif.wstrb <= tr.wstrb[i];
                 vif.wlast <= (i == tr.len);
                 @(posedge vif.aclk iff vif.wready == 1'b1);
             end

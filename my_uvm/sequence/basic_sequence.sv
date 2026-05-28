@@ -7,6 +7,7 @@ class axi_write_seq extends uvm_sequence #(axi_trans);
     
     rand bit [31:0] waddr;
     rand bit [7:0]  wlen;
+    rand bit [2:0]  wsize;
 
     function new(string name = "axi_write_seq");
         super.new(name);
@@ -19,6 +20,7 @@ class axi_write_seq extends uvm_sequence #(axi_trans);
             is_write == 1; 
             addr == local::waddr; 
             len == local::wlen;
+            size == local::wsize;
         });
         finish_item(trans);
     endtask
@@ -30,6 +32,7 @@ class axi_read_seq extends uvm_sequence #(axi_trans);
     
     rand bit [31:0] raddr;
     rand bit [7:0]  rlen;
+    rand bit [2:0] rsize;
 
     function new(string name = "axi_read_seq");
         super.new(name);
@@ -42,6 +45,7 @@ class axi_read_seq extends uvm_sequence #(axi_trans);
             is_write == 0; 
             addr == local::raddr; 
             len == local::rlen;
+            size == local::rsize;
         });
         finish_item(trans);
     endtask

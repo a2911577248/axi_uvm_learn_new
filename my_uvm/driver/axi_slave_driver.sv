@@ -97,12 +97,13 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 vif.wready <= 1;
                 @(posedge vif.aclk iff vif.wvalid == 1'b1);
 
-                for(int byte_idx = 0; byte_idx < write_bytes; byte_idx = byte_idx + 1)begin
+                for(int byte_idx = 0; byte_idx < 4; byte_idx = byte_idx + 1)begin
                     if(vif.wstrb[byte_idx])begin
-                        if(temp_addr + byte_idx > max_illegal_addr)begin
+                        logic [31:0] real_addr = (temp_addr & ~32'h3) + byte_idx;
+                        if(real_addr > max_illegal_addr)begin
                             is_illegal = 1'b1;
                         end else begin
-                            mem[temp_addr + byte_idx] = vif.wdata[byte_idx*8 +: 8];
+                            mem[real_addr] = vif.wdata[byte_idx*8 +: 8];
                         end
                     end
                 end
@@ -150,18 +151,18 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 vif.arready <= 0;
                 repeat($urandom_range(1,axi_cfg.max_delay)) @(posedge vif.aclk);
             end
-        end
 
-        vif.arready <= 1;
-        @(posedge vif.aclk iff (vif.arvalid == 1'b1));
-        begin
-            axi_trans tr;
-            tr = axi_trans::type_id::create("tr");
-            tr.addr = vif.araddr;
-            tr.len = vif.arlen;
-            tr.size = vif.arsize;
-            tr.id = vif.arid;
-            ar_q.push_back(tr);
+            vif.arready <= 1;
+            @(posedge vif.aclk iff (vif.arvalid == 1'b1));
+            begin
+                axi_trans tr;
+                tr = axi_trans::type_id::create("tr");
+                tr.addr = vif.araddr;
+                tr.len = vif.arlen;
+                tr.size = vif.arsize;
+                tr.id = vif.arid;
+                ar_q.push_back(tr);
+            end
         end
     endtask
 
@@ -199,11 +200,12 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                     repeat($urandom_range(1,axi_cfg.max_delay)) @(posedge vif.aclk);
                 end
 
-                for(int byte_idx; byte_idx < read_bytes; byte_idx = byte_idx + 1)begin
-                    if(temp_addr + byte_idx > max_illegal_addr)begin
+                for(int byte_idx = 0; byte_idx < 4; byte_idx = byte_idx + 1)begin
+                    logic [31:0] real_addr = (temp_addr & ~32'h3) + byte_idx;
+                    if(real_addr > max_illegal_addr)begin
                         is_illegal = 1'b1;
                     end else begin
-                        if(mem.exists(temp_addr + byte_idx)) temp_rdata[byte_idx * 8 +: 8] = mem[temp_addr + byte_idx];
+                        if(mem.exists(real_addr)) temp_rdata[byte_idx * 8 +: 8] = mem[real_addr];
                         else temp_rdata[byte_idx * 8 +: 8] = 8'hAB; 
                     end
                 end
@@ -260,12 +262,13 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 repeat($urandom_range(1, axi_cfg.max_delay)) @(posedge vif.aclk);
             end
 
-            for(int byte_idx = 0; byte_idx < read_bytes; byte_idx++) begin
-                if(current_addr[tr.id] + byte_idx > max_illegal_addr) begin
+            for(int byte_idx = 0; byte_idx < 4; byte_idx++) begin
+                logic [31:0] real_addr = (current_addr[tr.id] & ~32'h3) + byte_idx;
+                if(real_addr > max_illegal_addr) begin
                     is_illegal = 1'b1;
                 end else begin
-                    if(mem.exists(current_addr[tr.id] + byte_idx)) 
-                        temp_rdata[byte_idx * 8 +: 8] = mem[current_addr[tr.id] + byte_idx];
+                    if(mem.exists(real_addr)) 
+                        temp_rdata[byte_idx * 8 +: 8] = mem[real_addr];
                     else temp_rdata[byte_idx * 8 +: 8] = 8'hAB; 
                 end                  
             end

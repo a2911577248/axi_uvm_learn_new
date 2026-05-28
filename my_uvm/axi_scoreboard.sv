@@ -33,9 +33,10 @@ class axi_scoreboard extends uvm_scoreboard;
 
             foreach(tr.data[i]) begin
                 current_addr = tr.addr + i*byte_idx;
-                for(int j = 0; j < byte_idx; j = j + 1)begin
-                    if(tr.wstrb[j])begin
-                        ref_mem[current_addr + j] = tr.data[i][j*8 +: 8];  
+                for(int j = 0; j < 4; j = j + 1)begin
+                    if(tr.wstrb[i][j])begin
+                        logic [31:0] real_addr = (current_addr & ~32'h3) + j;
+                        ref_mem[real_addr] = tr.data[i][j*8 +: 8];  
                     end
                 end   
             end
@@ -60,8 +61,9 @@ class axi_scoreboard extends uvm_scoreboard;
                 expect_data = '0;
                 is_illegal = 0; 
 
-                for(int j=0; j < byte_idx; j = j+1)begin
-                    if(current_addr + j > max_illegal_addr) begin
+                for(int j=0; j < 4; j = j+1)begin
+                    logic [31:0] real_addr = (current_addr & ~32'h3) + j;
+                    if(real_addr > max_illegal_addr) begin
                         is_illegal = 1;
                     end
                 end
@@ -85,9 +87,10 @@ class axi_scoreboard extends uvm_scoreboard;
                 end
 
 
-                for(int j=0; j < byte_idx; j = j+1)begin
-                    if(ref_mem.exists(current_addr + j))begin
-                        expect_data[j*8 +: 8] = ref_mem[current_addr + j];   
+                for(int j=0; j < 4; j = j+1)begin
+                    logic [31:0] real_addr = (current_addr & ~32'h3) + j;
+                    if(ref_mem.exists(real_addr))begin
+                        expect_data[j*8 +: 8] = ref_mem[real_addr];   
                     end else begin
                         expect_data[j*8 +: 8] = 8'hAB; 
                     end

@@ -18,6 +18,10 @@ class base_test extends uvm_test;
         if (!uvm_config_db#(virtual axi_interface)::get(this, "", "vif", vif)) begin
             `uvm_fatal("BASE_TEST", "can not get axi_interface")
         end
+
+        cfg = axi_config::type_id::create("axi_cfg");
+
+        uvm_config_db#(axi_config)::set(this, "*", "axi_cfg", cfg);
     endfunction
     
     virtual task run_phase(uvm_phase phase);
