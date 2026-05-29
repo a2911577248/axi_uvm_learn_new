@@ -65,5 +65,6 @@ module tb_top;
   bind axi_interface axi_protocol_checker chk_inst (.*);
   bind axi_interface axi_burst_checker axi_burst_checker (.*);
   bind axi_interface axi_4k_boundary_checker  axi_4k_boundary (.*);
+  bind axi_interface outstanding_interleadving_checker  outstanding_interleadving (.*);
 
 endmodule

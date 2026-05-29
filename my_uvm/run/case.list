@@ -1,0 +1,5 @@
+﻿tc_base
+tc_illegal_addr
+tc_axi_violation
+tc_4k_cross
+tc_interleaving

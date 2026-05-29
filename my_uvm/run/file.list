@@ -10,6 +10,7 @@
 ../checker/axi_protocol_checker.sv
 ../checker/axi_burst_checker.sv
 ../checker/axi_4k_boundary_checker.sv
+../checker/outstanding_interleaving_checker.sv
 
 ../sequence/basic_sequence.sv
 ../sequence/axi_base_err_inject_seq.sv

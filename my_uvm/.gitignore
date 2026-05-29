@@ -2,3 +2,4 @@
 !/run/file.list
 !/run/Makefile
 !/run/regress_runner.sh
+!/run/case.list
