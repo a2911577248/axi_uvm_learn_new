@@ -43,6 +43,9 @@ interface axi_burst_checker(
             w_beat_numb <= '0;
         end else begin
             if(awvalid && awready) begin
+                if(awburst == 2'b11) begin
+                    `uvm_error("AXI_BURST_CHECKER", "unsupported awburst value 2'b11")
+                end
                 temp_aw_info_t.awaddr = awaddr;
                 temp_aw_info_t.awlen   = awlen;
                 temp_aw_info_t.awsize  = awsize;

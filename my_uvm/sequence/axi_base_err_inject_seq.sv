@@ -76,6 +76,7 @@ class axi_base_err_inject_seq extends basic_sequence;
         bit [31:0] cfg_waddr;
         bit [7:0]  cfg_wlen;
         bit [2:0]  cfg_wsize;
+        bit [1:0]  cfg_burst;
 
         if(!uvm_config_db#(virtual axi_interface)::get(null, "*", "vif", vif))
             `uvm_fatal("SEQ_VIOLATION", "Failed to get virtual interface 'vif'")
@@ -86,6 +87,10 @@ class axi_base_err_inject_seq extends basic_sequence;
         
         if (!$value$plusargs("BURST_LEN=%d", cfg_wlen)) begin
             cfg_wlen = 8'h03; 
+        end
+
+        if (!$value$plusargs("BURST_TYPE=%d", cfg_burst)) begin
+            cfg_burst = axi_trans::BURST_INCR;
         end
 
         cfg_wsize = 3'b010;
@@ -99,6 +104,7 @@ class axi_base_err_inject_seq extends basic_sequence;
                     waddr == cfg_waddr;
                     wlen == cfg_wlen;
                     wsize == cfg_wsize;
+                    wburst == cfg_burst;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end
@@ -111,6 +117,7 @@ class axi_base_err_inject_seq extends basic_sequence;
                     waddr == cfg_waddr;
                     wlen == cfg_wlen;
                     wsize == cfg_wsize;
+                    wburst == cfg_burst;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end
@@ -123,6 +130,7 @@ class axi_base_err_inject_seq extends basic_sequence;
                     waddr == cfg_waddr;
                     wlen == cfg_wlen;
                     wsize == cfg_wsize;
+                    wburst == cfg_burst;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end

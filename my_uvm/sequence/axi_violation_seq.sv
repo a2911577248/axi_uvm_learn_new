@@ -27,6 +27,7 @@ class axi_violation_seq extends axi_base_err_inject_seq;
                 if(!w_seq.randomize() with {
                     waddr == 32'h0F00;
                     wlen == 8'h03;
+                    wburst == axi_trans::BURST_INCR;
                 }) begin
                 `uvm_error("axi_violation_seq_randomize", "w_seq randomize failed!")
                 end

@@ -2,6 +2,10 @@ import uvm_pkg::*;   //Package classfunctiontypedef
 `include "uvm_macros.svh"   //macro
 
 class axi_trans extends uvm_sequence_item;
+    localparam bit [1:0] BURST_FIXED = 2'b00;
+    localparam bit [1:0] BURST_INCR  = 2'b01;
+    localparam bit [1:0] BURST_WRAP   = 2'b10;
+
     rand bit        is_write;
     rand bit[31:0]  addr;
     rand bit[31:0]  data[];
@@ -19,12 +23,38 @@ class axi_trans extends uvm_sequence_item;
 
 
     constraint c_brust{
-        burst == 2'b01;
+        burst inside {BURST_FIXED, BURST_INCR, BURST_WRAP};
         data.size() == len + 1;
         wstrb.size() == len + 1;
-        //size == 3'b010;
         foreach(wstrb[i]) wstrb[i] == 4'b1111;
+        if (burst == BURST_WRAP) len inside {8'h01, 8'h03, 8'h07, 8'h0f};
     }
+
+
+
+    function automatic bit [31:0] beat_addr(int unsigned beat_idx);
+        int unsigned beat_byte_count;
+        int unsigned burst_byte_count;
+        bit [31:0] wrap_base;
+
+        beat_byte_count = (1 << size);
+
+        case (burst)
+            BURST_FIXED: begin
+                return addr;
+            end
+
+            BURST_WRAP: begin
+                burst_byte_count = (len + 1) * beat_byte_count;
+                wrap_base = addr & ~(burst_byte_count - 1);
+                return wrap_base | ((addr + (beat_idx * beat_byte_count)) & (burst_byte_count - 1));
+            end
+
+            default: begin
+                return addr + (beat_idx * beat_byte_count);
+            end
+        endcase
+    endfunction
 
     `uvm_object_utils_begin(axi_trans)
         `uvm_field_int(is_write, UVM_ALL_ON)

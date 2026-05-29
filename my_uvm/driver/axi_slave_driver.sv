@@ -78,17 +78,17 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
         vif.wready <= 0;
         forever begin
             axi_trans tr;
-            logic [31:0] temp_addr;
             int write_bytes;
             logic is_illegal;
 
             wait(aw_q.size() > 0);
             tr = aw_q.pop_front();
-            temp_addr = tr.addr;
             write_bytes = 1 << tr.size;
             is_illegal = 1'b0;
 
             for(int i=0; i <= tr.len; i=i+1)begin
+                logic [31:0] beat_addr;
+
                 if(axi_cfg.w_delay_en && ($urandom_range(0,100) < 30))begin
                     vif.wready <= 0;
                     repeat($urandom_range(1,axi_cfg.max_delay)) @(posedge vif.aclk);
@@ -97,9 +97,11 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 vif.wready <= 1;
                 @(posedge vif.aclk iff vif.wvalid == 1'b1);
 
+                beat_addr = tr.beat_addr(i);
+
                 for(int byte_idx = 0; byte_idx < 4; byte_idx = byte_idx + 1)begin
                     if(vif.wstrb[byte_idx])begin
-                        logic [31:0] real_addr = (temp_addr & ~32'h3) + byte_idx;
+                        logic [31:0] real_addr = (beat_addr & ~32'h3) + byte_idx;
                         if(real_addr > max_illegal_addr)begin
                             is_illegal = 1'b1;
                         end else begin
@@ -107,7 +109,6 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                         end
                     end
                 end
-                temp_addr = temp_addr + write_bytes;
             end
             if(aw_q.size() == 0)begin
                vif.wready <= 0; 
@@ -179,7 +180,6 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
         forever begin
             int pop_idx;
             axi_trans tr;
-            logic [31:0] temp_addr;
             int read_bytes;
             logic is_illegal;
 
@@ -188,11 +188,11 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
             tr = ar_q[pop_idx];
             ar_q.delete(pop_idx);
 
-            temp_addr = tr.addr;
             read_bytes = 1 << tr.size;
 
             for(int i=0; i <= tr.len; i++)begin
                 logic [31:0]temp_rdata = '0;
+                logic [31:0] beat_addr;
                 is_illegal = 1'b0;
 
                 if(axi_cfg.r_delay_en && ($urandom_range(0,100)) < 30)begin
@@ -200,8 +200,10 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                     repeat($urandom_range(1,axi_cfg.max_delay)) @(posedge vif.aclk);
                 end
 
+                beat_addr = tr.beat_addr(i);
+
                 for(int byte_idx = 0; byte_idx < 4; byte_idx = byte_idx + 1)begin
-                    logic [31:0] real_addr = (temp_addr & ~32'h3) + byte_idx;
+                    logic [31:0] real_addr = (beat_addr & ~32'h3) + byte_idx;
                     if(real_addr > max_illegal_addr)begin
                         is_illegal = 1'b1;
                     end else begin
@@ -217,7 +219,6 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                 vif.rlast <= (i == tr.len);
 
                 @(posedge vif.aclk iff vif.rready == 1'b1);
-                temp_addr = temp_addr + read_bytes;
             end
             if(ar_q.size() == 0)begin
                 vif.rvalid <= 0;
@@ -263,7 +264,7 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
             end
 
             for(int byte_idx = 0; byte_idx < 4; byte_idx++) begin
-                logic [31:0] real_addr = (current_addr[tr.id] & ~32'h3) + byte_idx;
+                logic [31:0] real_addr = (tr.beat_addr(tr.len + 1 - current_beats[tr.id]) & ~32'h3) + byte_idx;
                 if(real_addr > max_illegal_addr) begin
                     is_illegal = 1'b1;
                 end else begin
@@ -284,7 +285,6 @@ class axi_slave_driver extends uvm_driver #(axi_trans);
                vif.rvalid <= 0; 
             end
 
-            current_addr[tr.id] = current_addr[tr.id] + read_bytes;
             current_beats[tr.id] = current_beats[tr.id] - 1;
             
             if (current_beats[tr.id] == 0) begin

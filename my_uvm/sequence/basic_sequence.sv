@@ -8,6 +8,7 @@ class axi_write_seq extends uvm_sequence #(axi_trans);
     rand bit [31:0] waddr;
     rand bit [7:0]  wlen;
     rand bit [2:0]  wsize;
+    rand bit [1:0]  wburst;
 
     function new(string name = "axi_write_seq");
         super.new(name);
@@ -21,6 +22,7 @@ class axi_write_seq extends uvm_sequence #(axi_trans);
             addr == local::waddr; 
             len == local::wlen;
             size == local::wsize;
+            burst == local::wburst;
         });
         finish_item(trans);
     endtask
@@ -33,6 +35,7 @@ class axi_read_seq extends uvm_sequence #(axi_trans);
     rand bit [31:0] raddr;
     rand bit [7:0]  rlen;
     rand bit [2:0] rsize;
+    rand bit [1:0]  rburst;
 
     function new(string name = "axi_read_seq");
         super.new(name);
@@ -46,6 +49,7 @@ class axi_read_seq extends uvm_sequence #(axi_trans);
             addr == local::raddr; 
             len == local::rlen;
             size == local::rsize;
+            burst == local::rburst;
         });
         finish_item(trans);
     endtask
@@ -64,6 +68,7 @@ class basic_sequence extends uvm_sequence #(axi_trans);
         
         bit [31:0] cfg_waddr;
         bit [7:0]  cfg_wlen;
+        bit [1:0]  cfg_burst;
 
         if (!$value$plusargs("START_ADDR=%h", cfg_waddr)) begin
             cfg_waddr = 32'h0100; 
@@ -73,13 +78,17 @@ class basic_sequence extends uvm_sequence #(axi_trans);
             cfg_wlen = 8'h03; 
         end
 
-        `uvm_info("SEQ", $sformatf("Starting basic sequence with ADDR=0x%0x, LEN=%0d", cfg_waddr, cfg_wlen), UVM_LOW)
+        if (!$value$plusargs("BURST_TYPE=%d", cfg_burst)) begin
+            cfg_burst = axi_trans::BURST_INCR;
+        end
 
-        `uvm_do_with(w_seq, { waddr == cfg_waddr; wlen == cfg_wlen; })
+        `uvm_info("SEQ", $sformatf("Starting basic sequence with ADDR=0x%0x, LEN=%0d, BURST=%0d", cfg_waddr, cfg_wlen, cfg_burst), UVM_LOW)
+
+        `uvm_do_with(w_seq, { waddr == cfg_waddr; wlen == cfg_wlen; wburst == cfg_burst; })
         
-        `uvm_do_with(r_seq, { raddr == cfg_waddr; rlen == cfg_wlen; })
+        `uvm_do_with(r_seq, { raddr == cfg_waddr; rlen == cfg_wlen; rburst == cfg_burst; })
 
-        `uvm_do_with(w_seq, { waddr == cfg_waddr; wlen == cfg_wlen; })
+        `uvm_do_with(w_seq, { waddr == cfg_waddr; wlen == cfg_wlen; wburst == cfg_burst; })
         
     endtask
 endclass

@@ -25,14 +25,10 @@ class axi_scoreboard extends uvm_scoreboard;
 
         //W
         if(tr.is_write)begin
-            int byte_idx;
-            int current_addr;
-
-            byte_idx = 1 << tr.size;
-            current_addr = 0;
-
             foreach(tr.data[i]) begin
-                current_addr = tr.addr + i*byte_idx;
+                int current_addr;
+                current_addr = tr.beat_addr(i);
+
                 for(int j = 0; j < 4; j = j + 1)begin
                     if(tr.wstrb[i][j])begin
                         logic [31:0] real_addr = (current_addr & ~32'h3) + j;
@@ -45,19 +41,16 @@ class axi_scoreboard extends uvm_scoreboard;
         //R
         if(!tr.is_write)begin
             int current_addr;
-            int byte_idx;
             logic [1:0] expected_resp;
             logic is_illegal;
             logic [31:0] expect_data;
 
-            byte_idx = 1 << tr.size;
             expect_data = '0;
-            current_addr = 0;
             expected_resp = 2'b00;
             is_illegal = 0;
 
             foreach(tr.data[i])begin
-                current_addr = tr.addr + i*byte_idx;
+                current_addr = tr.beat_addr(i);
                 expect_data = '0;
                 is_illegal = 0; 
 
